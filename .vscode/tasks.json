@@ -1,0 +1,16 @@
+{
+    // See https://code.visualstudio.com/docs/editor/tasks for more information
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "python install to ceos",
+            "type": "shell",
+            "command": "conda run -n ceos pip install .",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+    ]
+}

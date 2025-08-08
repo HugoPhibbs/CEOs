@@ -6,3 +6,9 @@ _generate/
 *.py[cod]
 *.egg-info
 *env*
+
+cmake-build-*
+
+*.txt
+
+*.bin
