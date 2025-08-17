@@ -1,0 +1,2 @@
+MIPS 994185 1000 420 /shared/Dataset/ANNS/CosineKNN/Msong_X_994185_420.txt /shared/Dataset/ANNS/CosineKNN/Msong_Q_1000_420.txt "2CEOs_Search"
+MIPS 1183514 1000 200 10 /shared/Dataset/ANNS/FalconnPP/Glove_X_1183514_200.txt  /shared/Dataset/ANNS/FalconnPP/Glove_Q_1000_200.txt "coCEOs"
