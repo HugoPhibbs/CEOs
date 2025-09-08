@@ -51,110 +51,45 @@ if __name__ == '__main__':
 
     #-------------------------------------------------------------------
     # coCEOs-Est 1 layer
-    top_m = 1000
-    n_repeats = 2**8
-    probed_vectors = 80
-    n_cand = 10000
-
-    D = 2**10
-    iProbe = 3 # not used in 1 layer
-    verbose = True
-    seed = -1
-    centering = True
-
-    print("\ncoCEOs-est")
-
-    t1 = timeit.default_timer()
-    index = CEOs.CEOs(n, d)
-    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
-    index.centering = True
-    index.build_coCEOs_Est(X)  # X must have n x d
-    t2 = timeit.default_timer()
-    print('coCEOs-Est index time: {}'.format(t2 - t1))
-
-    index.n_cand = n_cand
-    index.n_probed_vectors = probed_vectors
-    t1 = timeit.default_timer()
-    approx_kNN, approx_Dist = index.search_coCEOs_Est(Q, k, verbose)  # search
-    print("\tcoCEOs-Est query time: {}".format(timeit.default_timer() - t1))
-    print("\tcoCEOs-Est accuracy: ", utils.getAcc(exact_kNN, approx_kNN))
-
-    # utils.coceos_est(exact_kNN, X, Q, k, D, top_m, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
-
-    #-------------------------------------------------------------------
-    # CEOs-Hash 1 layer
-    top_m = 1000
-    n_repeats = 2**8
-    probed_vectors = 80
-    probed_points = top_m
-
-    D = 2**10
-    iProbe = 10 # not used for 1 layer
-    verbose = True
-    seed = -1
-    centering = True
-
-    print("\nCEOs-hash")
-    utils.ceos_hash(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
+    # top_m = 1000
+    # n_repeats = 2**6 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # D = 2**10 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # probed_vectors = 80
+    # iProbe = 0 # not used in 1 layer case
+    # verbose = True
+    # seed = -1 # -1 means random
+    # centering = False
+    #
+    # print("\nCEOs-Est")
+    # n_cand = 10000 # numDist = n_cand
+    # utils.coceos_est1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
+    #
+    # print("\nCEOs-hash")
+    # probed_points = top_m # numDist = probed_points * probed_vectors
+    # utils.ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
     #-------------------------------------------------------------------
     # coCEOs-Est (2 layers)
     top_m = 1000
-    n_repeats = 2**8
-    probed_vectors = 80
-    n_cand = 10000
+    n_repeats = 2**6 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
 
-    D = 2**8
+    probed_vectors = n_repeats * 20
     iProbe = 8
     verbose = True
-    seed = 42
-    centering = False
+    seed = -1
+    centering = True
 
-    print("\ncoCEOs-Est2")
-    t1 = timeit.default_timer()
-    index = CEOs.CEOs(n, d)
-    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
-    index.centering = False
-    index.build_coCEOs_Est2(X)  # X must have n x d
-    t2 = timeit.default_timer()
-    print('coCEOs-Est2 index time: {}'.format(t2 - t1))
+    # print("\nCEOs-Est2")
+    # n_cand = 10000 # numDist = n_cand
+    # utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
 
-    index.n_cand = n_cand
-    index.n_probed_vectors = probed_vectors
-    index.n_probed_points = top_m
-    t1 = timeit.default_timer()
-    approx_kNN, approx_Dist = index.search_coCEOs_Est2(Q, k, verbose)  # search
-    print("\tcoCEOs-Est2 query time: {}".format(timeit.default_timer() - t1))
-    print("\tcoCEOs-Est2 accuracy: ", utils.getAcc(exact_kNN, approx_kNN))
-
-    #-------------------------------------------------------------------------------
-
-    # CEOs-Hash 2 layers
-    top_m = 20
+    print("\nCEOs-hash2")
     n_repeats = 2**8
-    probed_vectors = n_repeats * 10
-
-    D = 2**8
+    top_m = 50
+    probed_points = top_m # numDist = probed_points * probed_vectors
     iProbe = 4
-    verbose = True
-    seed = 42
-    centering = False
-
-    print("\nCEOs-Hash2")
-    t1 = timeit.default_timer()
-    index = CEOs.CEOs(n, d)
-    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
-    index.centering = False
-    index.build_CEOs_Hash2(X)  # X must have n x d
-    t2 = timeit.default_timer()
-    print('CEOs-Hash2 index time: {}'.format(t2 - t1))
-
-    index.n_probed_vectors = probed_vectors
-    index.n_probed_points = top_m
-    t1 = timeit.default_timer()
-    approx_kNN, approx_Dist = index.search_CEOs_Hash2(Q, k, verbose)  # search
-    print("\tCEOs-Hash2 query time: {}".format(timeit.default_timer() - t1))
-    print("\tCEOs-Hash2 accuracy: ", utils.getAcc(exact_kNN, approx_kNN))
+    utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
 
 
