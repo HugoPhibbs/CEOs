@@ -52,8 +52,8 @@ if __name__ == '__main__':
     #-------------------------------------------------------------------
     # coCEOs-Est 1 layer
     top_m = 1000
-    n_repeats = 2**6
-    probed_vectors = n_repeats * 20
+    n_repeats = 2**8
+    probed_vectors = 80
     n_cand = 10000
 
     D = 2**10
@@ -84,8 +84,8 @@ if __name__ == '__main__':
     #-------------------------------------------------------------------
     # CEOs-Hash 1 layer
     top_m = 1000
-    n_repeats = 2**6
-    probed_vectors = n_repeats * 20
+    n_repeats = 2**8
+    probed_vectors = 80
     probed_points = top_m
 
     D = 2**10
@@ -100,12 +100,12 @@ if __name__ == '__main__':
     #-------------------------------------------------------------------
     # coCEOs-Est (2 layers)
     top_m = 1000
-    n_repeats = 2**6
-    probed_vectors = n_repeats * 20
+    n_repeats = 2**8
+    probed_vectors = 80
     n_cand = 10000
 
     D = 2**8
-    iProbe = 4
+    iProbe = 8
     verbose = True
     seed = 42
     centering = False
@@ -130,9 +130,9 @@ if __name__ == '__main__':
     #-------------------------------------------------------------------------------
 
     # CEOs-Hash 2 layers
-    top_m = 10
-    n_repeats = 2**6
-    probed_vectors = n_repeats * 20
+    top_m = 20
+    n_repeats = 2**8
+    probed_vectors = n_repeats * 10
 
     D = 2**8
     iProbe = 4
