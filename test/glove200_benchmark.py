@@ -17,12 +17,12 @@ if __name__ == '__main__':
     Q = utils.mmap_bin(bin_file, q, d)
 
     ## Cosine
-    # norms = np.linalg.norm(X, axis=1, keepdims=True)
-    # norms[norms == 0] = 1
-    # X /= norms # X = np.array(X, copy=True)  # makes it writable
-    # norms = np.linalg.norm(Q, axis=1, keepdims=True)
-    # norms[norms == 0] = 1
-    # Q /= norms # Q = np.array(Q, copy=True)  # makes it writable
+    norms = np.linalg.norm(X, axis=1, keepdims=True)
+    norms[norms == 0] = 1
+    X /= norms # X = np.array(X, copy=True)  # makes it writable
+    norms = np.linalg.norm(Q, axis=1, keepdims=True)
+    norms[norms == 0] = 1
+    Q /= norms # Q = np.array(Q, copy=True)  # makes it writable
 
     #-------------------------------------------------------------------
     savePath = "/shared/Dataset/ANNS/CEOs/"
@@ -34,7 +34,6 @@ if __name__ == '__main__':
     # np.save(path + "Glove200_Cosine_k_100_indices.npy", exact_kNN)    # shape: (n, k), dtype: int32
 
     exact_kNN = np.load(savePath + "Glove200_Cosine_k_100_indices.npy")  # shape: (n, k), dtype: int32
-    # exact_kNN = np.load(path + "Gist_Dot_k_100_indices.npy")  # shape: (n, k), dtype: int32
 
     k = 10
     exact_kNN = exact_kNN[: , :k]
@@ -71,24 +70,31 @@ if __name__ == '__main__':
     #-------------------------------------------------------------------
     # coCEOs-Est (2 layers)
     top_m = 1000
-    n_repeats = 2**6 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
-    D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    n_repeats = 2**6
+    probed_vectors = 80
+    n_cand = 30000
 
-    probed_vectors = n_repeats * 20
+    D = 2**8
     iProbe = 8
     verbose = True
     seed = -1
-    centering = True
+    centering = False
 
-    # print("\nCEOs-Est2")
-    # n_cand = 10000 # numDist = n_cand
-    # utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
+    print("\ncoCEOs-Est2")
+    utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
+
+    #-------------------------------------------------------------------
+    top_m = 50
+    n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    probed_vectors = n_repeats * 5
+    iProbe = 4
+    verbose = True
+    seed = -1 # -1 means random
+    centering = 1
 
     print("\nCEOs-hash2")
-    n_repeats = 2**8
-    top_m = 50
     probed_points = top_m # numDist = probed_points * probed_vectors
-    iProbe = 4
     utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
 

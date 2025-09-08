@@ -17,12 +17,12 @@ if __name__ == '__main__':
     Q = utils.mmap_bin(bin_file, q, d)
 
     ## Cosine
-    # norms = np.linalg.norm(X, axis=1, keepdims=True)
-    # norms[norms == 0] = 1
-    # X /= norms # X = np.array(X, copy=True)  # makes it writable
-    # norms = np.linalg.norm(Q, axis=1, keepdims=True)
-    # norms[norms == 0] = 1
-    # Q /= norms # Q = np.array(Q, copy=True)  # makes it writable
+    norms = np.linalg.norm(X, axis=1, keepdims=True)
+    norms[norms == 0] = 1
+    X /= norms # X = np.array(X, copy=True)  # makes it writable
+    norms = np.linalg.norm(Q, axis=1, keepdims=True)
+    norms[norms == 0] = 1
+    Q /= norms # Q = np.array(Q, copy=True)  # makes it writable
 
     #-------------------------------------------------------------------
     savePath = "/shared/Dataset/ANNS/CEOs/"
@@ -34,13 +34,12 @@ if __name__ == '__main__':
     # np.save(path + "Glove200_Cosine_k_100_indices.npy", exact_kNN)    # shape: (n, k), dtype: int32
 
     exact_kNN = np.load(savePath + "Glove200_Cosine_k_100_indices.npy")  # shape: (n, k), dtype: int32
-    # exact_kNN = np.load(path + "Gist_Dot_k_100_indices.npy")  # shape: (n, k), dtype: int32
 
     k = 10
     exact_kNN = exact_kNN[: , :k]
     #-------------------------------------------------------------------
     # top_m = 1000
-    # n_repeats = 2**0
+    # n_repeats = 2**6
     # probed_vectors = 80
     # n_cand = 20000
     #
@@ -51,66 +50,51 @@ if __name__ == '__main__':
     # centering = True
     #
     # print("\ncoCEOs-est1")
-    # utils.coceos_est(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
+    # utils.coceos_est1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
 
     #-------------------------------------------------------------------
 
     # top_m = 1000
     # n_repeats = 2**6
     # probed_vectors = 80
-    # n_cand = 10000
+    # n_cand = 30000
     #
     # D = 2**8
     # iProbe = 8
     # verbose = True
-    # seed = 42
+    # seed = -1
     # centering = False
     #
     # print("\ncoCEOs-Est2")
-    # t1 = timeit.default_timer()
-    # index = CEOs.CEOs(n, d)
-    # index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
-    # index.centering = False
-    # index.build_coCEOs_Est2(X)  # X must have n x d
-    # t2 = timeit.default_timer()
-    # print('coCEOs-Est2 index time: {}'.format(t2 - t1))
-    #
-    # index.n_cand = n_cand
-    # index.n_probed_vectors = probed_vectors
-    # index.n_probed_points = top_m
-    # t1 = timeit.default_timer()
-    # approx_kNN, approx_Dist = index.search_coCEOs_Est2(Q, k, verbose)  # search
-    # print("\tcoCEOs-Est2 query time: {}".format(timeit.default_timer() - t1))
-    # print("\tcoCEOs-Est2 accuracy: ", utils.getAcc(exact_kNN, approx_kNN))
-
-
+    # utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
 
     #-------------------------------------------------------------------
-    top_m = 20
-    n_repeats = 2**8
-    probed_vectors = n_repeats * 20
+    # top_m = 500
+    # n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # D = 2**10 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # probed_vectors = 160
+    # iProbe = 0 # not used in 1 layer case
+    # verbose = True
+    # seed = -1 # -1 means random
+    # centering = False
+    #
+    # print("\nCEOs-hash")
+    # probed_points = top_m # numDist = probed_points * probed_vectors
+    # utils.ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
-    D = 2**8
+    #-------------------------------------------------------------------
+    top_m = 50
+    n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    probed_vectors = n_repeats * 5
     iProbe = 4
     verbose = True
-    seed = 42
-    centering = False
+    seed = -1 # -1 means random
+    centering = 1
 
-    print("\nCEOs-Hash2")
-    t1 = timeit.default_timer()
-    index = CEOs.CEOs(n, d)
-    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
-    index.centering = False
-    index.build_CEOs_Hash2(X)  # X must have n x d
-    t2 = timeit.default_timer()
-    print('CEOs-Hash2 index time: {}'.format(t2 - t1))
-
-    index.n_probed_vectors = probed_vectors
-    index.n_probed_points = top_m
-    t1 = timeit.default_timer()
-    approx_kNN, approx_Dist = index.search_CEOs_Hash2(Q, k, verbose)  # search
-    print("\tCEOs-Hash2 query time: {}".format(timeit.default_timer() - t1))
-    print("\tCEOs-Hash2 accuracy: ", utils.getAcc(exact_kNN, approx_kNN))
+    print("\nCEOs-hash2")
+    probed_points = top_m # numDist = probed_points * probed_vectors
+    utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
     #-------------------------------------------------------------------
     # utils.streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats, n_threads)

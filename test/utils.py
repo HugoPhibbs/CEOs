@@ -274,7 +274,7 @@ def ceos_est(exact_kNN, X, Q, k=10, D=2**10, probed_vectors=20, n_cand=100, n_re
         print("\tCEOs accuracy: ", getAcc(exact_kNN, approx_kNN))
 
 # coCEOs-est
-def coceos_est(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=10, probed_vectors=20, n_cand=100, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
+def coceos_est1(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=0, probed_vectors=20, n_cand=100, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
 
     t1 = timeit.default_timer()
     n, d = np.shape(X)
@@ -301,7 +301,33 @@ def coceos_est(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=10, probed_vect
         print("\tcoCEOs-Est query time: {}".format(timeit.default_timer() - t1))
         print("\tcoCEOs-Est accuracy: ", getAcc(exact_kNN, approx_kNN))
 
-def ceos_hash(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=10, probed_vectors=20, probed_points=50, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
+def coceos_est2(exact_kNN, X, Q, k=10, D=2**8, top_m=100, iProbe=2, probed_vectors=40, n_cand=100, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
+
+    t1 = timeit.default_timer()
+    n, d = np.shape(X)
+    index = CEOs.CEOs(n, d)
+
+    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
+    index.centering = centering
+
+    index.build_coCEOs_Est2(X)  # X must have n x d
+    t2 = timeit.default_timer()
+    print('coCEOs-Est2 index time: {}'.format(t2 - t1))
+    index.n_cand = n_cand
+
+    # index.set_threads(1)
+    for i in range(1):
+        # nprobe is the number of cells in nlist that we will search
+        # nprobe < nlist
+        index.n_probed_vectors = probed_vectors + i * 5
+        index.n_probed_points = top_m
+        print("top-proj = %d, top-points = %d" % (index.n_probed_vectors, index.n_probed_points))
+        t1 = timeit.default_timer()
+        approx_kNN, approx_Dist = index.search_coCEOs_Est2(Q, k, verbose)  # search
+        print("\tcoCEOs-Est2 query time: {}".format(timeit.default_timer() - t1))
+        print("\tcoCEOs-Est2 accuracy: ", getAcc(exact_kNN, approx_kNN))
+
+def ceos_hash1(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=0, probed_vectors=20, probed_points=50, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
 
     t1 = timeit.default_timer()
     n, d = np.shape(X)
@@ -323,6 +349,29 @@ def ceos_hash(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=10, probed_vecto
         approx_kNN, approx_Dist = index.search_CEOs_Hash(Q, k, verbose)  # search
         print("\tCEOs-Hash query time (s): {}".format(timeit.default_timer() - t1))
         print("\tCEOs-Hash accuracy: ", getAcc(exact_kNN, approx_kNN))
+
+def ceos_hash2(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=2, probed_vectors=20, probed_points=50, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
+
+    t1 = timeit.default_timer()
+    n, d = np.shape(X)
+    index = CEOs.CEOs(n, d)
+
+    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
+    index.centering = centering
+    index.build_CEOs_Hash2(X)  # X must have d x n
+
+    t2 = timeit.default_timer()
+    print('CEOs-Hash2 index time (s): {}'.format(t2 - t1))
+
+    # index.set_threads(1)
+    for i in range(1):
+        index.n_probed_vectors = probed_vectors + i * 5
+        index.n_probed_points = probed_points
+        print("n_probed_vectors = %d, n_probed_points = %d" % (index.n_probed_vectors, index.n_probed_points))
+        t1 = timeit.default_timer()
+        approx_kNN, approx_Dist = index.search_CEOs_Hash2(Q, k, verbose)  # search
+        print("\tCEOs-Hash2 query time (s): {}".format(timeit.default_timer() - t1))
+        print("\tCEOs-Hash2 accuracy: ", getAcc(exact_kNN, approx_kNN))
 
 def streamCEOs_test(exact_kNN, X, Q, k=10, top_m=100, probed_vectors=20, n_cand=100, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
 

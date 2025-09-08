@@ -1,0 +1,90 @@
+CEOs-hash
+Building CEOs-Hash index...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 1024
+top_m: 50
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 2.062
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index (including data) in GB: 0.930615
+Projecting time: 3.5982e+06 ms
+Extracting top-m points time: 247.929 ms
+Constructing time (in seconds): 120.109
+CEOs-Hash index time (s): 120.10944377304986
+n_probed_vectors = 1280, n_probed_points = 50
+n_probedVectors: 1280
+n_probedPoints: 50
+n_cand: 50
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 1069.43 ms
+Estimating time: 0 ms
+Computing distance time: 24667 ms
+Querying time: 872 ms
+        CEOs-Hash query time (s): 0.8728692720178515
+        CEOs-Hash accuracy:  0.6188999999999998
+
+CEOs-hash
+Building CEOs-Hash index...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 1024
+top_m: 500
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 1.987
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index (including data) in GB: 2.83491
+Projecting time: 1.61369e+07 ms
+Extracting top-m points time: 27940.9 ms
+Constructing time (in seconds): 533.854
+CEOs-Hash index time (s): 533.8544881519629
+n_probed_vectors = 80, n_probed_points = 500
+n_probedVectors: 80
+n_probedPoints: 500
+n_cand: 500
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 2588.65 ms
+Estimating time: 0 ms
+Computing distance time: 13572.7 ms
+Querying time: 554 ms
+        CEOs-Hash query time (s): 0.554146590991877
+        CEOs-Hash accuracy:  0.7619999999999996
+
+=================
+
+CEOs-hash
+Building CEOs-Hash index...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 1024
+top_m: 500
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 2.044
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index (including data) in GB: 2.83491
+Projecting time: 1.58996e+07 ms
+Extracting top-m points time: 27044.5 ms
+Constructing time (in seconds): 527.402
+CEOs-Hash index time (s): 527.4028752509621
+n_probed_vectors = 160, n_probed_points = 500
+n_probedVectors: 160
+n_probedPoints: 500
+n_cand: 500
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 2600.64 ms
+Estimating time: 0 ms
+Computing distance time: 28080 ms
+Querying time: 1041 ms
+        CEOs-Hash query time (s): 1.041490291012451
+        CEOs-Hash accuracy:  0.8826999999999965
+
+        

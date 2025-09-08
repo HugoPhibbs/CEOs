@@ -373,6 +373,7 @@ void CEOs::build_coCEOs_Est1(const Ref<const RowMajorMatrixXf> &matX)
     cout << "n_repeats: " << CEOs::n_repeats << endl;
     cout << "n_proj: " << CEOs::n_proj << endl;
     cout << "top_m: " << CEOs::top_m << endl;
+    cout << "centering: " << CEOs::centering << endl;
     cout << "fhtDim: " << CEOs::fhtDim << endl;
 
     auto start = chrono::high_resolution_clock::now();
@@ -499,7 +500,7 @@ void CEOs::build_coCEOs_Est1(const Ref<const RowMajorMatrixXf> &matX)
     for (size_t b = 0; b < CEOs::vec2D_Pair_Buckets.size(); ++b)
         dSize += 1.0 * CEOs::vec2D_Pair_Buckets[b].size() * sizeof(IFPair) / (1 << 30);
 
-    cout << "Size of coCEOs-Est index in GB: " << dSize << endl;
+    cout << "Size of coCEOs-Est index (including X) in GB: " << dSize << endl;
 
 #pragma omp parallel for
     for (size_t i = 0; i < NUM_LOCKS; ++i) {
@@ -542,8 +543,8 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est1(const Ref<con
     int n_queries = matQ.rows();
     if (verbose)
     {
-        cout << "n_probedVectors: " << CEOs::n_probed_vectors << endl;
-        cout << "n_probedPoints: " << CEOs::n_probed_points << endl;
+        cout << "n_probed_vectors: " << CEOs::n_probed_vectors << endl;
+        cout << "n_probed_points: " << CEOs::n_probed_points << endl;
         cout << "n_cand: " << CEOs::n_cand << endl;
         cout << "n_threads: " << CEOs::n_threads << endl;
 
@@ -742,13 +743,14 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est1(const Ref<con
  */
 void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
 {
-    cout << "Building coCEOs-Estimate index..." << endl;
+    cout << "Building CEOs-Hash index..." << endl;
 
     cout << "n_points: " << CEOs::n_points << endl;
     cout << "n_features: " << CEOs::n_features << endl;
     cout << "n_repeats: " << CEOs::n_repeats << endl;
     cout << "n_proj: " << CEOs::n_proj << endl;
     cout << "top_m: " << CEOs::top_m << endl;
+    cout << "centering: " << CEOs::centering << endl;
     cout << "fhtDim: " << CEOs::fhtDim << endl;
 
     auto start = chrono::high_resolution_clock::now();
@@ -1094,6 +1096,7 @@ void CEOs::build_coCEOs_Est2(const Ref<const RowMajorMatrixXf> &matX)
     cout << "n_proj: " << CEOs::n_proj << endl;
     cout << "iProbe: " << CEOs::iProbe << endl;
     cout << "top_m: " << CEOs::top_m << endl;
+    cout << "centering: " << CEOs::centering << endl;
     cout << "fhtDim: " << CEOs::fhtDim << endl;
 
     auto start = chrono::high_resolution_clock::now();
@@ -1733,6 +1736,7 @@ void CEOs::build_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &matX)
     cout << "n_proj: " << CEOs::n_proj << endl;
     cout << "iProbe: " << CEOs::iProbe << endl;
     cout << "top_m: " << CEOs::top_m << endl;
+    cout << "centering: " << CEOs::centering << endl;
     cout << "fhtDim: " << CEOs::fhtDim << endl;
 
     auto start = chrono::high_resolution_clock::now();
@@ -2903,8 +2907,8 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash_HighMem(const R
     if (verbose)
     {
         cout << "n_queries: " << n_queries << endl;
-        cout << "n_probedVectors: " << CEOs::n_probed_vectors << endl;
-        cout << "n_probedPoints: " << CEOs::n_probed_points << endl;
+        cout << "n_probed_vectors: " << CEOs::n_probed_vectors << endl;
+        cout << "n_probed_points: " << CEOs::n_probed_points << endl;
         // cout << "n_cand: " << CEOs::n_cand << endl;
         cout << "n_threads: " << CEOs::n_threads << endl;
     }
