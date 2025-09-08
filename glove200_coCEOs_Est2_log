@@ -1,0 +1,136 @@
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+fhtDim: 256
+Copying data time (in seconds): 2.309
+Total points in all buckets: 31486522
+Size of coCEOs-Est2 (without data) index in GB: 32.6096
+coCEOs-Est2 index time: 99.70296142998268
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of aggregations per point: 54655.9
+Projecting and extracting top-vectors time: 2363.48 ms
+Estimating time: 1331.84 ms
+Extracting candidates time: 2151.92 ms
+Computing distance time: 3522.04 ms
+Querying time: 329 ms
+        coCEOs-Est2 query time: 0.32917868698132224
+        coCEOs-Est2 accuracy:  0.7466999999999985
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+fhtDim: 256
+Copying data time (in seconds): 2.298
+Total points in all buckets: 31486522
+Size of coCEOs-Est2 (without data) index in GB: 32.6096
+coCEOs-Est2 index time: 99.8682718790078
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of aggregations per point: 54655.9
+Projecting and extracting top-vectors time: 1889.86 ms
+Estimating time: 1342.16 ms
+Extracting candidates time: 2152.86 ms
+Computing distance time: 3582.16 ms
+Querying time: 323 ms
+        coCEOs-Est2 query time: 0.32376560001284815
+        coCEOs-Est2 accuracy:  0.7466999999999985
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+fhtDim: 256
+Copying data time (in seconds): 2.263
+Total points in all buckets: 537890283
+Size of coCEOs-Est2 (without data) index in GB: 36.3826
+coCEOs-Est2 index time: 98.19738220999716
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of aggregations per point: 38999.2
+Projecting and extracting top-vectors time: 1917.59 ms
+Estimating time: 1150.01 ms
+Extracting candidates time: 1735.36 ms
+Computing distance time: 3624.15 ms
+Querying time: 305 ms
+        coCEOs-Est2 query time: 0.30517874099314213
+        coCEOs-Est2 accuracy:  0.717799999999999
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 16
+top_m: 1000
+fhtDim: 256
+Copying data time (in seconds): 2.202
+Total points in all buckets: 1894559099
+Size of coCEOs-Est2 (without data) index in GB: 110.491
+coCEOs-Est2 index time: 353.6770373379986
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of aggregations per point: 78349.1
+Projecting and extracting top-vectors time: 2104.39 ms
+Estimating time: 2250.7 ms
+Extracting candidates time: 2832.82 ms
+Computing distance time: 3562.24 ms
+Querying time: 383 ms
+        coCEOs-Est2 query time: 0.3833210469747428
+        coCEOs-Est2 accuracy:  0.8313999999999976
+        
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+fhtDim: 256
+Copying data time (in seconds): 2.235
+Total points in all buckets: 31486522
+Size of coCEOs-Est2 (without data) index in GB: 32.6096
+coCEOs-Est2 index time: 100.31052834098227
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of aggregations per point: 54655.9
+Projecting and extracting top-vectors time: 1930.85 ms
+Estimating time: 1387.5 ms
+Extracting candidates time: 2179.66 ms
+Computing distance time: 3540.94 ms
+Querying time: 323 ms
+        coCEOs-Est2 query time: 0.3239804409968201
+        coCEOs-Est2 accuracy:  0.7466999999999985
+

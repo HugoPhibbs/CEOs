@@ -1,0 +1,180 @@
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 1
+n_proj: 1024
+top_m: 1000
+fhtDim: 1024
+Copying data time (in seconds): 2.289
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 0.897045
+Projecting time: 70061.2 ms
+Extracting top-m points time: 450.163 ms
+Constructing time (in seconds): 4.577
+coCEOs-Est index time: 4.577957444009371
+top-proj = 40, top-points = 1000
+n_probedVectors: 40
+n_probedPoints: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 24.72 ms
+Estimating time: 1091.25 ms
+Extracting candidates time: 1768.45 ms
+Computing distance time: 3733.71 ms
+Querying time: 230 ms
+        coCEOs-Est query time: 0.23096405697287992
+        coCEOs-Est accuracy:  0.14869999999999906
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 1
+n_proj: 1024
+top_m: 1000
+fhtDim: 1024
+Copying data time (in seconds): 2.275
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 0.897045
+Projecting time: 69423.1 ms
+Extracting top-m points time: 463.416 ms
+Constructing time (in seconds): 4.598
+coCEOs-Est index time: 4.598638111987384
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 32.529 ms
+Estimating time: 2446.21 ms
+Extracting candidates time: 3620.44 ms
+Computing distance time: 7400.11 ms
+Querying time: 462 ms
+        coCEOs-Est query time: 0.4621194000064861
+        coCEOs-Est accuracy:  0.2089999999999991
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 4
+n_proj: 1024
+top_m: 1000
+fhtDim: 1024
+Copying data time (in seconds): 2.296
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 0.942822
+Projecting time: 277591 ms
+Extracting top-m points time: 1710.85 ms
+Constructing time (in seconds): 11.41
+coCEOs-Est index time: 11.410924266005168
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 69.47 ms
+Estimating time: 2282.4 ms
+Extracting candidates time: 3595.34 ms
+Computing distance time: 7783.24 ms
+Querying time: 453 ms
+        coCEOs-Est query time: 0.4535692060017027
+        coCEOs-Est accuracy:  0.37050000000000016
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 1024
+top_m: 1000
+fhtDim: 1024
+Copying data time (in seconds): 2.262
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 1.85835
+Projecting time: 4.41147e+06 ms
+Extracting top-m points time: 25704.3 ms
+Constructing time (in seconds): 146.086
+coCEOs-Est index time: 146.0869359060016
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 688.428 ms
+Estimating time: 2138.42 ms
+Extracting candidates time: 3589.56 ms
+Computing distance time: 7532.12 ms
+Querying time: 464 ms
+        coCEOs-Est query time: 0.46478063700487837
+        coCEOs-Est accuracy:  0.6554999999999996
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 1024
+top_m: 1000
+fhtDim: 1024
+Copying data time (in seconds): 2.231
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 4.78804
+Projecting time: 1.77496e+07 ms
+Extracting top-m points time: 103028 ms
+Constructing time (in seconds): 582.569
+coCEOs-Est index time: 582.5700496709906
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 2638.67 ms
+Estimating time: 2323.38 ms
+Extracting candidates time: 3522.69 ms
+Computing distance time: 7043.85 ms
+Querying time: 524 ms
+        coCEOs-Est query time: 0.524635780020617
+        coCEOs-Est accuracy:  0.753999999999999
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/test_2layer.py
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 16
+n_proj: 16384
+top_m: 1000
+fhtDim: 16384
+Copying data time (in seconds): 2.266
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 4.78804
+Projecting time: 1.24146e+07 ms
+Extracting top-m points time: 104752 ms
+Constructing time (in seconds): 415.204
+coCEOs-Est index time: 415.20502913100063
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 2879.6 ms
+Estimating time: 2329.8 ms
+Extracting candidates time: 3634.08 ms
+Computing distance time: 6921.45 ms
+Querying time: 550 ms
+        coCEOs-Est query time: 0.5510538469825406
+        coCEOs-Est accuracy:  0.7447999999999984

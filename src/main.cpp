@@ -55,7 +55,7 @@ int main(int nargs, char** args) {
 
     // CEOs-Est
     CEOs ceos(iParam.n_points, iParam.n_features);
-    ceos.set_CEOsParam(iParam.n_proj, iParam.n_repeats, iParam.top_m, iParam.n_threads, iParam.seed);
+    ceos.set_CEOsParam(iParam.n_proj, iParam.n_repeats, iParam.top_m, iParam.iProbe, iParam.n_threads, iParam.seed);
 
     ceos.build_CEOs(MATRIX_X);
     ceos.n_cand = qParam.n_cand;

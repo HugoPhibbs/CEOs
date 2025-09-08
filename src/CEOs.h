@@ -25,24 +25,28 @@ protected:
     int n_proj = 256;
     int n_rotate = 3;
     int top_m = 100; // query might use a subset of closest/furthest points to the vector
+    int iProbe = 10; // 2-layer: For each point, we put it into iProbe buckets (iProbe in Falcon++) - so each layer need to extract iProbe vectors
     
     int n_repeats = 1;
     int seed = -1;
 
     RowMajorMatrixXf matrix_X; // n x d
+    RowVectorXf vecCenter;
 
     // Use for both CEOs-Est and coCEOs
     // - CEOs Est: n x (n_proj * repeat) where the first (n_proj x n) is for the first set of random rotation
     // - coCEOs: (4 * top-points) x (n_proj * repeat)
     // the first/second is index/projection value of close points, the third/forth is index/projection value of far points
     MatrixXf matrix_P;
+    vector<vector<IFPair>> vec2D_Pair_Buckets;
+    vector<vector<int>> vec2D_Buckets;
 
     // coCEOs-hash: (2 * indexBucketSize) x (n_proj * repeat)
     MatrixXi matrix_H;
 
     int fhtDim;
 
-    boost::dynamic_bitset<> bitHD;
+    boost::dynamic_bitset<> bitHD1, bitHD2;
 
 public:
 
@@ -60,13 +64,15 @@ public:
         n_features = d;
     }
 
-    void set_CEOsParam(int numProj, int numRepeats, int m, int t, int s) {
+    void set_CEOsParam(int numProj, int numRepeats, int m, int i, int t, int s) {
 
         n_proj = numProj;
         n_repeats = numRepeats;
 
         top_m = m;
-        n_probed_points = top_m;
+        iProbe = i; // 2 layers
+
+        vecCenter = RowVectorXf::Zero(n_features);
 
         set_threads(t);
         seed = s;
@@ -78,6 +84,10 @@ public:
         else
             fhtDim = 1 << int(ceil(log2(n_proj)));
 
+        // Default query params
+        n_probed_vectors = top_m;
+        n_cand = top_m;
+
     }
 
     void clear() {
@@ -85,7 +95,13 @@ public:
         matrix_P.resize(0, 0);
         matrix_H.resize(0, 0);
 
-        bitHD.clear();
+        vecCenter.resize(0);
+
+        bitHD1.clear();
+        bitHD2.clear();
+
+        vec2D_Pair_Buckets.clear();
+        vec2D_Buckets.clear();
     }
 
     // Will use for setting candidate for re-rank
@@ -104,13 +120,25 @@ public:
     void build_CEOs(const Ref<const RowMajorMatrixXf> &);
     tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs(const Ref<const RowMajorMatrixXf> &, int, bool=false);
 
-    void build_coCEOs_Est(const Ref<const RowMajorMatrixXf> &);
-    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_coCEOs_Est(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    void build_coCEOs_Est1(const Ref<const RowMajorMatrixXf> &);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_coCEOs_Est1(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    void build_coCEOs_Est2(const Ref<const RowMajorMatrixXf> &);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_coCEOs_Est2(const Ref<const RowMajorMatrixXf> &, int, bool=false);
 
-    void build_CEOs_Hash(const Ref<const RowMajorMatrixXf> &);
-    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs_Hash(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    void build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    void build_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+
+    //================= High memory version =========================
+    void build_coCEOs_Est_HighMem(const Ref<const RowMajorMatrixXf> &);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_coCEOs_Est_HighMem(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    void build_CEOs_Hash_HighMem(const Ref<const RowMajorMatrixXf> &);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs_Hash_HighMem(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    //================================================================
 
     ~CEOs() { clear(); }
 };
 
 #endif //CEOS_H
+

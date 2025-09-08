@@ -317,6 +317,24 @@ void readIndexParam(int nargs, char** args, IndexParam& iParam)
         cout << "Default Top_m points: " << iParam.top_m << endl;
     }
 
+    // iProbe
+    bSuccess = false;
+    for (int i = 1; i < nargs; i++)
+    {
+        if (strcmp(args[i], "--iProbe") == 0)
+        {
+            iParam.top_m = atoi(args[i + 1]);
+            cout << "Top_m points closest/furthest to the random vector: " << iParam.top_m << endl;
+            bSuccess = true;
+            break;
+        }
+    }
+    if (!bSuccess)
+    {
+        iParam.iProbe = 10;
+        cout << "Default iProve: " << iParam.iProbe << endl;
+    }
+
     // n_threads
     iParam.n_threads = -1;
     for (int i = 1; i < nargs; i++)

@@ -19,6 +19,43 @@ import CEOs
 import numpy as np
 import timeit
 
+def hadamard_matrix(p):
+    # p must be a power of two
+    H = np.array([[1.0]])
+    while H.shape[0] < p:
+        H = np.block([[H, H], [H, -H]])
+    return H
+
+def srht_rotation(d, rng=None):
+    """
+    Structured orthogonal: R = (1/sqrt(d)) * H * D * Pi
+    - H: Walsh-Hadamard (d must be power of two; pad otherwise)
+    - D: random ±1 on the diagonal
+    - Pi: random column permutation
+    """
+    rng = np.random.default_rng() if rng is None else rng
+    # if d not power of 2, pad to next power and crop at the end
+    p = 1 << (d - 1).bit_length()
+    H = hadamard_matrix(p) / np.sqrt(p)
+    D = np.diag(rng.choice([-1.0, 1.0], size=p))
+    Pi = np.eye(p)[:, rng.permutation(p)]
+    Rfull = H @ D @ Pi @ H @ D   # product of orthogonals = orthogonal
+    return Rfull[:d, :d]
+
+def haar_random_rotation(d, rng=None):
+    """
+    Returns an orthogonal matrix R ~ Haar(SO(d)) with det(R)=+1.
+    """
+    rng = np.random.default_rng() if rng is None else rng
+    G = rng.normal(size=(d, d))               # i.i.d. N(0,1)
+    Q, R = np.linalg.qr(G)                    # QR with arbitrary signs
+    s = np.sign(np.diag(R))
+    s[s == 0] = 1
+    Q = Q @ np.diag(s)                        # fix column signs -> Haar
+    if np.linalg.det(Q) < 0:                  # ensure a proper rotation
+        Q[:, 0] = -Q[:, 0]
+    return Q
+
 def mmap_bin(bin_path, num_rows, num_cols, dtype=np.float32):
     # ('r+' = read/write; 'r' = read-only)
     # mode='c' = copy-on-write (modifications are NOT written back)
@@ -32,13 +69,19 @@ def getAcc(exact, approx):
     return result / n
 
 # Faiss BF
-def faissBF(X, Q, k, numThreads):
+def faissBF(X, Q, k, numThreads, dist='ip'):
 
     n, d = np.shape(X)
     faiss.omp_set_num_threads(numThreads)
 
     t1 = timeit.default_timer()
-    index = faiss.IndexFlatIP(d)   # build the index
+
+    # build the index
+    if (dist == 'l2'):
+        index = faiss.IndexFlatL2(d)
+    else:
+        index = faiss.IndexFlatIP(d)
+
     index.add(X)                  # add vectors to the index
     t2 = timeit.default_timer()
     print('Faiss bruteforce index time: {}'.format(t2 - t1))
@@ -55,7 +98,7 @@ def faissBF(X, Q, k, numThreads):
 
     return exact_kNN
 
-def faissIVF(exact_kNN, X, Q, k=10, n_list = 100, n_probe = 10, n_threads=8):
+def faissIVF(exact_kNN, X, Q, k=10, n_list = 100, n_probe = 10, n_threads=8, dist='ip'):
     """
     Run label propagation clustering using Faiss + iGraph.
 
@@ -77,7 +120,11 @@ def faissIVF(exact_kNN, X, Q, k=10, n_list = 100, n_probe = 10, n_threads=8):
     print("nlist = ", nlist)
 
     t1 = timeit.default_timer()
-    quantizer = faiss.IndexFlatL2(d)  # the other index
+    if (dist == 'l2'):
+        quantizer = faiss.IndexFlatL2(d)  # the other index
+    else:
+        quantizer = faiss.IndexFlatIP(d)  # the other index
+
     index = faiss.IndexIVFFlat(quantizer, d, nlist)
     # 8 specifies that each sub-vector is encoded as 8 bits
     index.train(X)
@@ -97,7 +144,7 @@ def faissIVF(exact_kNN, X, Q, k=10, n_list = 100, n_probe = 10, n_threads=8):
         print("\tFaiss-IVF Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
 
-def faiss_approx_kNN_IVFPQ(exact_kNN, X, Q, k=10, n_list = 100, n_subquantizer = 8, n_probe = 10, n_threads=8):
+def faiss_approx_kNN_IVFPQ(exact_kNN, X, Q, k=10, n_list = 100, n_subquantizer = 8, n_probe = 10, n_threads=8, dist='ip'):
     """
     Run label propagation clustering using Faiss + iGraph.
 
@@ -123,7 +170,11 @@ def faiss_approx_kNN_IVFPQ(exact_kNN, X, Q, k=10, n_list = 100, n_subquantizer =
 
 
     t1 = timeit.default_timer()
-    quantizer = faiss.IndexFlatL2(d)  # the other index
+    if (dist == 'l2'):
+        quantizer = faiss.IndexFlatL2(d)  # the other index
+    else:
+        quantizer = faiss.IndexFlatIP(d)
+
     index = faiss.IndexIVFPQ(quantizer, d, nlist, m, nbits)
 
     # 8 specifies that each sub-vector is encoded as 8 bits
@@ -144,7 +195,7 @@ def faiss_approx_kNN_IVFPQ(exact_kNN, X, Q, k=10, n_list = 100, n_subquantizer =
         print("\tFaiss-IVFPQ Accuracy: ", getAcc(exact_kNN, approx_kNN))
     
 # HNSW
-def hnswMIPS(exact_kNN, X, Q, k, efSearch=100, n_threads=8):
+def hnswMIPS(exact_kNN, X, Q, k, efSearch=100, n_threads=8, dist='ip'):
 
     n, d = np.shape(X)
 
@@ -152,7 +203,7 @@ def hnswMIPS(exact_kNN, X, Q, k, efSearch=100, n_threads=8):
 
     hnsw_m = 64  # The number of neighbors for HNSW. This is typically 32
     efConstruction = 16
-    index = hnswlib.Index(space='ip', dim=d)
+    index = hnswlib.Index(space=dist, dim=d)
     print("m = %d, ef = %d" % (hnsw_m, efConstruction))
 
     index.set_num_threads(n_threads)
@@ -197,16 +248,16 @@ def scannMIPS(exact_kNN, X, Q, k):
         print("\tScann Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
 # CEOs
-def ceos_est(exact_kNN, X, Q, k, D, probed_vectors, n_cand, n_repeats = 1, n_threads = 8, verbose=True):
+def ceos_est(exact_kNN, X, Q, k=10, D=2**10, probed_vectors=20, n_cand=100, n_repeats = 1, n_threads = 8, seed=-1, verbose=True):
 
 
     t1 = timeit.default_timer()
     n, d = np.shape(X)
     index = CEOs.CEOs(n, d)
-    seed = -1
     top_m = n # not use for CEOs-Est
+    iProbe = 10 # not use for CEOs-Est
 
-    index.setIndexParam(D, n_repeats, top_m, n_threads, seed)
+    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
     index.build(X)  # X must have d x n
     t2 = timeit.default_timer()
 
@@ -223,14 +274,15 @@ def ceos_est(exact_kNN, X, Q, k, D, probed_vectors, n_cand, n_repeats = 1, n_thr
         print("\tCEOs accuracy: ", getAcc(exact_kNN, approx_kNN))
 
 # coCEOs-est
-def coceos_est(exact_kNN, X, Q, k, D, top_m, probed_vectors, n_cand, n_repeats=1, n_threads=8, verbose=True):
+def coceos_est(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=10, probed_vectors=20, n_cand=100, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
 
     t1 = timeit.default_timer()
     n, d = np.shape(X)
     index = CEOs.CEOs(n, d)
-    seed = -1
 
-    index.setIndexParam(D, n_repeats, top_m, n_threads, seed)
+
+    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
+    index.centering = centering
 
     index.build_coCEOs_Est(X)  # X must have n x d
     t2 = timeit.default_timer()
@@ -249,15 +301,14 @@ def coceos_est(exact_kNN, X, Q, k, D, top_m, probed_vectors, n_cand, n_repeats=1
         print("\tcoCEOs-Est query time: {}".format(timeit.default_timer() - t1))
         print("\tcoCEOs-Est accuracy: ", getAcc(exact_kNN, approx_kNN))
 
-def ceos_hash(exact_kNN, X, Q, k, D, top_m, probed_vectors, probed_points, n_repeats=1, n_threads=8, verbose=True):
+def ceos_hash(exact_kNN, X, Q, k=10, D=2**10, top_m=100, iProbe=10, probed_vectors=20, probed_points=50, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
 
     t1 = timeit.default_timer()
     n, d = np.shape(X)
     index = CEOs.CEOs(n, d)
-    seed = -1
 
-    index.setIndexParam(D, n_repeats, top_m, n_threads, seed)
-    index.centering = True
+    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
+    index.centering = centering
     index.build_CEOs_Hash(X)  # X must have d x n
 
     t2 = timeit.default_timer()
@@ -273,15 +324,7 @@ def ceos_hash(exact_kNN, X, Q, k, D, top_m, probed_vectors, probed_points, n_rep
         print("\tCEOs-Hash query time (s): {}".format(timeit.default_timer() - t1))
         print("\tCEOs-Hash accuracy: ", getAcc(exact_kNN, approx_kNN))
 
-def streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats=1, n_threads=8, verbose=True):
-
-    top_m = 500
-    probed_vectors = 40
-    n_cand = 100
-    n_repeats = 2**1
-    D = 2**9
-
-    seed = -1
+def streamCEOs_test(exact_kNN, X, Q, k=10, top_m=100, probed_vectors=20, n_cand=100, n_repeats=1, n_threads=8, seed=-1, verbose=True, centering=False):
 
     n, d = np.shape(X)
     t1 = timeit.default_timer()
@@ -302,7 +345,7 @@ def streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats
         index.n_probed_points = top_m
         print("top-vectors = %d, top-points = %d" % (index.n_probed_vectors, index.n_probed_points))
         t1 = timeit.default_timer()
-        approx_kNN, approx_dist = index.estimate_search(Q, k, True)  # search
+        approx_kNN, approx_dist = index.estimate_search(Q, k, verbose)  # search
         print('\tstreamCEOs-est query time: {}'.format(timeit.default_timer() - t1))
         print("\tstreamCEOs-est Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
@@ -310,6 +353,7 @@ def streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats
     top_m = 20
     probed_vectors = 100
     probed_points = top_m
+    index.centering = centering
 
     for i in range(1):
         # nprobe is the number of cells in nlist that we will search
@@ -318,16 +362,13 @@ def streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats
         index.n_probed_points = probed_points
         print("top-vectors = %d, top-points = %d" % (index.n_probed_vectors, index.n_probed_points))
         t1 = timeit.default_timer()
-        approx_kNN, approx_dist = index.hash_search(Q, k, True)  # search
+        approx_kNN, approx_dist = index.hash_search(Q, k, verbose)  # search
         print('\tstreamCEOs-hash query time: {}'.format(timeit.default_timer() - t1))
         print("\tstreamCEOs-hash Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
-def streamCEOs_est(X, Q, k, top_m, probed_vectors, n_cand, n_repeats=1, n_threads=8):
+def streamCEOs_est(X, Q, k=10, D=2**10, top_m=100, probed_vectors=20, n_cand=100, n_repeats=1, n_threads=8,seed=-1, verbose=True, centering=False):
 
     n, d = np.shape(X)
-
-    D = 2**10
-    seed = -1
     n_size = int(n / 10)
 
     t1 = timeit.default_timer()
@@ -346,7 +387,7 @@ def streamCEOs_est(X, Q, k, top_m, probed_vectors, n_cand, n_repeats=1, n_thread
     print("top-proj = %d, top-points = %d" % (index.n_probed_vectors, index.n_probed_points))
 
     t1 = timeit.default_timer()
-    approx_kNN, approx_dist = index.estimate_search(Q, k, True)  # search
+    approx_kNN, approx_dist = index.estimate_search(Q, k, verbose)  # search
     print('\tcoCEOs-stream-est query time: {}'.format(timeit.default_timer() - t1))
     print("\tcoCEOs-stream-est Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
@@ -368,24 +409,21 @@ def streamCEOs_est(X, Q, k, top_m, probed_vectors, n_cand, n_repeats=1, n_thread
         exact_kNN = faissBF(X[startIdx : endIdx, :], Q, k, n_threads)
 
         t1 = timeit.default_timer()
-        approx_kNN, approx_dist = index.estimate_search(Q, k, True)  # search
+        approx_kNN, approx_dist = index.estimate_search(Q, k, verbose)  # search
         print('\tstreamCEOs-est query time: {}'.format(timeit.default_timer() - t1))
         print("\tstreamCEOs-est Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
     print('Total time update and query time: {}'.format(timeit.default_timer() - startTime))
 
 
-def streamCEOs_hash(X, Q, k, top_m, probed_vectors, n_repeats=1, n_threads=8):
+def streamCEOs_hash(X, Q, k=10, D = 2**10, top_m=100, probed_vectors=20, n_repeats=1, n_threads=8,seed=-1, verbose=True, centering=False):
 
     n, d = np.shape(X)
-
-    D = 2**10
     n_size = int(n / 10)
-    seed = -1
 
     t1 = timeit.default_timer()
     index = CEOs.streamCEOs(d)
-
+    index.centering = centering
     index.set_threads(n_threads)
     index.setIndexParam(D, n_repeats, top_m, n_threads, seed)
     index.build(X[0 : n_size, :])
@@ -398,7 +436,7 @@ def streamCEOs_hash(X, Q, k, top_m, probed_vectors, n_repeats=1, n_threads=8):
     exact_kNN = faissBF(X[0: n_size, :], Q, k, n_threads)
 
     t1 = timeit.default_timer()
-    approx_kNN, approx_dist = index.hash_search(Q, k, True)  # search
+    approx_kNN, approx_dist = index.hash_search(Q, k, verbose)  # search
     print('\tstreamCEOs-hash query time: {}'.format(timeit.default_timer() - t1))
     print("\tstreamCEOs-hash Accuracy: ", getAcc(exact_kNN, approx_kNN))
 
@@ -417,7 +455,7 @@ def streamCEOs_hash(X, Q, k, top_m, probed_vectors, n_repeats=1, n_threads=8):
         exact_kNN = faissBF(new_X, Q, k, n_threads)
 
         t1 = timeit.default_timer()
-        approx_kNN, approx_dist = index.hash_search(Q, k, True)  # search
+        approx_kNN, approx_dist = index.hash_search(Q, k, verbose)  # search
         print('\tstreamCEOs-hash query time: {}'.format(timeit.default_timer() - t1))
         print("\tstreamCEOs-hash Accuracy: ", getAcc(exact_kNN, approx_kNN))
 

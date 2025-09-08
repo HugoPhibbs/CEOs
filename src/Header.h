@@ -86,6 +86,7 @@ struct IndexParam
     int n_features;
     int n_proj;
     int top_m;
+    int iProbe;
     int n_repeats;
     int n_threads;
     int seed;

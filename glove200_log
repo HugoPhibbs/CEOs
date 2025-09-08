@@ -1,0 +1,30 @@
+Faiss bruteforce index time: 0.41294089797884226
+Faiss bruteforce query time: 8.351795096998103
+
+CEOs
+Building CEOs index...
+n_points: 1183514
+n_features: 200
+n_repeats: 2
+n_proj: 1024
+fhtDim: 1024
+Copying data time (in seconds): 0.408
+Size of CEOs index in GB: 9.91128
+Size of data set in GB: 0.881787
+Index construction time (in seconds): 5.209
+CEOs index time: 5.209873860003427
+CEOs top-proj:  20
+n_queries: 1000
+n_probed_vectors: 20
+n_probed_points: 1183514
+n_cand: 50
+n_threads: 32
+Projecting and extracting top-vectors time: 41.485 ms
+Estimating time: 108418 ms
+Extracting candidates time: 2843.13 ms
+Computing distance time: 67.141 ms
+Querying time: 3781 ms
+        CEOs query time: 3.7816735219676048
+        CEOs accuracy:  0.43760000000000016
+
+-------------------------------------------------------

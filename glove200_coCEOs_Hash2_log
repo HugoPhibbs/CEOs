@@ -1,0 +1,140 @@
+CEOs-Hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 256
+iProbe: 2
+top_m: 100
+fhtDim: 256
+Copying data time (in seconds): 2.146
+Total points in all buckets: 8.47359e+08
+Size of CEOs-Hash2 (without data) index in GB: 5.49894
+CEOs-Hash2 index time: 75.47755623899866
+n_probed_vectors: 5120
+n_probed_points: 100
+n_cand: 100
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 183068
+Avg number of aggregations per point: 237222
+Projecting and extracting top-vectors time: 1966.7 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 76764.1 ms
+Querying time: 2685 ms
+        CEOs-Hash2 query time: 2.6855573400098365
+        CEOs-Hash2 accuracy:  0.9971999999999996
+
+
+Building CEOs-Hash index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 256
+iProbe: 2
+top_m: 10
+fhtDim: 256
+Copying data time (in seconds): 2.124
+Total points in all buckets: 2.68435e+08
+Size of CEOs-Hash2 (without data) index in GB: 3.1472
+CEOs-Hash2 index time: 65.76747583600809
+n_probed_vectors: 5120
+n_probed_points: 10
+n_cand: 10
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 43288.1
+Avg number of aggregations per point: 47169.3
+Projecting and extracting top-vectors time: 1936.55 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 17602.3 ms
+Querying time: 654 ms
+        CEOs-Hash2 query time: 0.6544933929981198
+        CEOs-Hash2 accuracy:  0.8996999999999965
+
+CEOs-Hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 256
+iProbe: 4
+top_m: 10
+fhtDim: 256
+Copying data time (in seconds): 2.264
+Total points in all buckets (millions): 268.435
+Size of CEOs-Hash2 (without data) index in GB: 3.85454
+CEOs-Hash2 index time: 87.86422141699586
+n_probed_vectors: 5120
+n_probed_points: 10
+n_cand: 10
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 46137.4
+Avg number of aggregations per point: 50961.1
+Projecting and extracting top-vectors time: 1926.77 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 18806 ms
+Querying time: 696 ms
+        CEOs-Hash2 query time: 0.6966514100204222
+        CEOs-Hash2 accuracy:  0.9039999999999967
+
+CEOs-Hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 1024
+iProbe: 4
+top_m: 10
+fhtDim: 1024
+Copying data time (in seconds): 2.291
+Total points in all buckets: 1.84456e+19
+Size of CEOs-Hash2 (without data) index in GB: 1.71757e+10
+CEOs-Hash2 index time: 364.19973472101265
+n_probed_vectors: 5120
+n_probed_points: 10
+n_cand: 10
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 34640.3
+Avg number of aggregations per point: 38807.9
+Projecting and extracting top-vectors time: 6231.26 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 11648 ms
+Querying time: 595 ms
+        CEOs-Hash2 query time: 0.5956902949837968
+        CEOs-Hash2 accuracy:  0.9453999999999976
+
+CEOs-Hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 256
+n_proj: 256
+iProbe: 4
+top_m: 20
+fhtDim: 256
+Copying data time (in seconds): 2.385
+Total points in all buckets (millions): 536.871
+Size of CEOs-Hash2 (without data) index in GB: 5.78937
+CEOs-Hash2 index time: 96.14883540399023
+n_probed_vectors: 5120
+n_probed_points: 20
+n_cand: 20
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 86140.7
+Avg number of probes per point: 100562
+Projecting and extracting top-vectors time: 1978.01 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 35424.5 ms
+Querying time: 1309 ms
+        CEOs-Hash2 query time: 1.3092257549869828
+        CEOs-Hash2 accuracy:  0.9628999999999971
+

@@ -21,11 +21,12 @@ PYBIND11_MODULE(CEOs, m) { // Must be the same name with class CEOs
          )
         //
         .def("setIndexParam", &CEOs::set_CEOsParam,
-            py::arg("n_proj"), py::arg("n_repeats") = 1, py::arg("top_m") = 10,
+            py::arg("n_proj"), py::arg("n_repeats") = 1, py::arg("top_m") = 10, py::arg("iProbe") = 10,
             py::arg("n_threads") = -1, py::arg("random_seed") = -1,
          "n_proj: number pf projections.\n"
          "n_repeats: number of call random projections, so in total we have n_proj * n_repeats number of projections.\n"
          "top-m: number of top-m points closest/furthest to the random vector.\n"
+         "iProbe: number of insertions per point.\n"
          "n_threads: number of threads."
         )
 //        .def_readwrite("n_threads", &CEOs::n_threads)
@@ -40,12 +41,18 @@ PYBIND11_MODULE(CEOs, m) { // Must be the same name with class CEOs
         .def("search", &CEOs::search_CEOs,
              py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
         //
-        .def("build_coCEOs_Est", &CEOs::build_coCEOs_Est, py::arg("dataset"))
-        .def("search_coCEOs_Est", &CEOs::search_coCEOs_Est,
+        .def("build_coCEOs_Est", &CEOs::build_coCEOs_Est1, py::arg("dataset"))
+        .def("search_coCEOs_Est", &CEOs::search_coCEOs_Est1,
             py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
-        .def("build_CEOs_Hash", &CEOs::build_CEOs_Hash, py::arg("dataset"))
-        .def("search_CEOs_Hash", &CEOs::search_CEOs_Hash,
+        .def("build_coCEOs_Est2", &CEOs::build_coCEOs_Est2, py::arg("dataset"))
+        .def("search_coCEOs_Est2", &CEOs::search_coCEOs_Est2,
+          py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
+        .def("build_CEOs_Hash", &CEOs::build_CEOs_Hash1, py::arg("dataset"))
+        .def("search_CEOs_Hash", &CEOs::search_CEOs_Hash1,
             py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
+        .def("build_CEOs_Hash2", &CEOs::build_CEOs_Hash2, py::arg("dataset"))
+        .def("search_CEOs_Hash2", &CEOs::search_CEOs_Hash2,
+          py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
         ;
 
     // streamCEOs

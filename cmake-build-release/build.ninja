@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_CEOs: phony || CMakeFiles/CEOs.dir
 
 build CMakeFiles/CEOs.dir/src/main.cpp.o: CXX_COMPILER__CEOs_unscanned_Release /home/npha145/Dropbox$ (Uni$ of$ Auckland)/Working/_Code/C++/CEOs/src/main.cpp || cmake_object_order_depends_target_CEOs
   DEP_FILE = CMakeFiles/CEOs.dir/src/main.cpp.o.d
-  FLAGS = -fopenmp -O3 -march=native -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -isystem /usr/include/eigen3
   OBJECT_DIR = CMakeFiles/CEOs.dir
   OBJECT_FILE_DIR = CMakeFiles/CEOs.dir/src
@@ -60,7 +60,7 @@ build CMakeFiles/CEOs.dir/src/main.cpp.o: CXX_COMPILER__CEOs_unscanned_Release /
 
 build CMakeFiles/CEOs.dir/src/Utilities.cpp.o: CXX_COMPILER__CEOs_unscanned_Release /home/npha145/Dropbox$ (Uni$ of$ Auckland)/Working/_Code/C++/CEOs/src/Utilities.cpp || cmake_object_order_depends_target_CEOs
   DEP_FILE = CMakeFiles/CEOs.dir/src/Utilities.cpp.o.d
-  FLAGS = -fopenmp -O3 -march=native -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -isystem /usr/include/eigen3
   OBJECT_DIR = CMakeFiles/CEOs.dir
   OBJECT_FILE_DIR = CMakeFiles/CEOs.dir/src
@@ -69,7 +69,7 @@ build CMakeFiles/CEOs.dir/src/Utilities.cpp.o: CXX_COMPILER__CEOs_unscanned_Rele
 
 build CMakeFiles/CEOs.dir/src/CEOs.cpp.o: CXX_COMPILER__CEOs_unscanned_Release /home/npha145/Dropbox$ (Uni$ of$ Auckland)/Working/_Code/C++/CEOs/src/CEOs.cpp || cmake_object_order_depends_target_CEOs
   DEP_FILE = CMakeFiles/CEOs.dir/src/CEOs.cpp.o.d
-  FLAGS = -fopenmp -O3 -march=native -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -isystem /usr/include/eigen3
   OBJECT_DIR = CMakeFiles/CEOs.dir
   OBJECT_FILE_DIR = CMakeFiles/CEOs.dir/src
@@ -96,7 +96,7 @@ build CMakeFiles/CEOs.dir/src/fht.c.o: C_COMPILER__CEOs_unscanned_Release /home/
 
 build CMakeFiles/CEOs.dir/src/streamCEOs.cpp.o: CXX_COMPILER__CEOs_unscanned_Release /home/npha145/Dropbox$ (Uni$ of$ Auckland)/Working/_Code/C++/CEOs/src/streamCEOs.cpp || cmake_object_order_depends_target_CEOs
   DEP_FILE = CMakeFiles/CEOs.dir/src/streamCEOs.cpp.o.d
-  FLAGS = -fopenmp -O3 -march=native -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
+  FLAGS = -fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -isystem /usr/include/eigen3
   OBJECT_DIR = CMakeFiles/CEOs.dir
   OBJECT_FILE_DIR = CMakeFiles/CEOs.dir/src
@@ -112,7 +112,7 @@ build CMakeFiles/CEOs.dir/src/streamCEOs.cpp.o: CXX_COMPILER__CEOs_unscanned_Rel
 # Link the executable CEOs
 
 build CEOs: CXX_EXECUTABLE_LINKER__CEOs_Release CMakeFiles/CEOs.dir/src/main.cpp.o CMakeFiles/CEOs.dir/src/Utilities.cpp.o CMakeFiles/CEOs.dir/src/CEOs.cpp.o CMakeFiles/CEOs.dir/src/fast_copy.c.o CMakeFiles/CEOs.dir/src/fht.c.o CMakeFiles/CEOs.dir/src/streamCEOs.cpp.o
-  FLAGS = -fopenmp -O3 -march=native -O3 -DNDEBUG
+  FLAGS = -fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG
   OBJECT_DIR = CMakeFiles/CEOs.dir
   POST_BUILD = :
   PRE_LINK = :

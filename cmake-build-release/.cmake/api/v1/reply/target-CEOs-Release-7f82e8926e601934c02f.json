@@ -42,7 +42,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -fopenmp -O3 -march=native -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always"
+					"fragment" : " -fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG -std=gnu++17 -fdiagnostics-color=always"
 				}
 			],
 			"includes" : 
@@ -99,7 +99,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-fopenmp -O3 -march=native -O3 -DNDEBUG",
+				"fragment" : "-fopenmp -O3 -march=native -DNDEBUG -O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{
