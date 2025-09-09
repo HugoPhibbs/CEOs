@@ -1,0 +1,97 @@
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 1
+n_proj: 1024
+top_m: 1000
+centering: 1
+fhtDim: 1024
+Copying data time (in seconds): 2.031
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 0.897045
+Projecting time: 71699 ms
+Extracting top-m points time: 421.365 ms
+Constructing time (in seconds): 4.377
+coCEOs-Est index time: 4.377488807018381
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 28.789 ms
+Estimating time: 2055.69 ms
+Extracting candidates time: 3713.89 ms
+Computing distance time: 7628.4 ms
+Querying time: 439 ms
+        coCEOs-Est query time: 0.43985007202718407
+        coCEOs-Est accuracy:  0.2186999999999988
+
+=============
+Large top-m, small n_probed_vectors lead to higher accuracy
+=============
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 1024
+top_m: 1000
+centering: 1
+fhtDim: 1024
+Copying data time (in seconds): 2.027
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index in GB: 1.85835
+Projecting time: 4.52154e+06 ms
+Extracting top-m points time: 23287.4 ms
+Constructing time (in seconds): 151.327
+coCEOs-Est index time: 151.32749779999722
+top-proj = 80, top-points = 1000
+n_probedVectors: 80
+n_probedPoints: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 693.84 ms
+Estimating time: 1999.81 ms
+Extracting candidates time: 3765.26 ms
+Computing distance time: 7191.26 ms
+Querying time: 475 ms
+        coCEOs-Est query time: 0.4754621430183761
+        coCEOs-Est accuracy:  0.6557999999999996
+
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 1024
+top_m: 100
+centering: 1
+fhtDim: 1024
+Copying data time (in seconds): 2.075
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index (including X) in GB: 0.979443
+Projecting time: 3.59659e+06 ms
+Extracting top-m points time: 2825.39 ms
+Constructing time (in seconds): 121.653
+coCEOs-Est index time: 121.65392269002041
+top-proj = 800, top-points = 100
+n_probed_vectors: 800
+n_probed_points: 100
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time: 924.436 ms
+Estimating time: 2390.22 ms
+Extracting candidates time: 3770.32 ms
+Computing distance time: 7107.03 ms
+Querying time: 515 ms
+        coCEOs-Est query time: 0.5156091889948584
+        coCEOs-Est accuracy:  0.5182999999999994
+        
+=================================        
+

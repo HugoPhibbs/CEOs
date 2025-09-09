@@ -1,0 +1,161 @@
+================
+centering = 0 gives higher accuracy
+
+coCEOs-Est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+centering: 1
+fhtDim: 256
+Copying data time (in seconds): 1.978
+Total points in all buckets (in millions): 4816.5
+Size of coCEOs-Est2 (without data) index in GB: 36.3826
+coCEOs-Est2 index time: 95.87439416203415
+top-proj = 80, top-points = 1000
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of probes per point: 38999.2
+Projecting and extracting top-vectors time: 2079.11 ms
+Estimating time: 1346.86 ms
+Extracting candidates time: 1921.18 ms
+Computing distance time: 3602.49 ms
+Querying time: 313 ms
+        coCEOs-Est2 query time: 0.31354051700327545
+        coCEOs-Est2 accuracy:  0.717799999999999
+
+
+coCEOs-Est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 2.015
+Total points in all buckets (in millions): 4225.33
+Size of coCEOs-Est2 (without data) index in GB: 32.6113
+coCEOs-Est2 index time: 97.40740048501175
+top-proj = 80, top-points = 1000
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of probes per point: 54479.4
+Projecting and extracting top-vectors time: 1986.2 ms
+Estimating time: 1481.33 ms
+Extracting candidates time: 2289.33 ms
+Computing distance time: 3522.45 ms
+Querying time: 338 ms
+        coCEOs-Est2 query time: 0.3387272200197913
+        coCEOs-Est2 accuracy:  0.7551999999999984
+
+================
+n_cand increase accuracy
+
+coCEOs-Est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 2.05
+Total points in all buckets (in millions): 4229.19
+Size of coCEOs-Est2 (without data) index in GB: 32.6438
+coCEOs-Est2 index time: 97.21448843600228
+top-proj = 80, top-points = 1000
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 20000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 19951.1
+Avg number of probes per point: 54286.2
+Projecting and extracting top-vectors time: 2003.62 ms
+Estimating time: 1588.42 ms
+Extracting candidates time: 2776.8 ms
+Computing distance time: 7251.6 ms
+Querying time: 472 ms
+        coCEOs-Est2 query time: 0.47254097898257896
+        coCEOs-Est2 accuracy:  0.8007999999999988
+        
+        
+coCEOs-Est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 8
+top_m: 1000
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 2.005
+Total points in all buckets (in millions): 4228.1
+Size of coCEOs-Est2 (without data) index in GB: 32.6349
+coCEOs-Est2 index time: 96.51643612596672
+top-proj = 80, top-points = 1000
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 30000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 29596.6
+Avg number of probes per point: 54224.3
+Projecting and extracting top-vectors time: 1977.21 ms
+Estimating time: 1606.36 ms
+Extracting candidates time: 2605.1 ms
+Computing distance time: 11127.4 ms
+Querying time: 619 ms
+        coCEOs-Est2 query time: 0.6194032260100357
+        coCEOs-Est2 accuracy:  0.8340999999999986
+        
+        
+======================
+iProbe = 16 => 110 GB
+
+Building coCEOs-Estimate index (2 layers)...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 256
+iProbe: 16
+top_m: 1000
+fhtDim: 256
+Copying data time (in seconds): 2.202
+Total points in all buckets: 1894559099
+Size of coCEOs-Est2 (without data) index in GB: 110.491
+coCEOs-Est2 index time: 353.6770373379986
+n_probed_vectors: 80
+n_probed_points: 1000
+n_cand: 10000
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 10000
+Avg number of aggregations per point: 78349.1
+Projecting and extracting top-vectors time: 2104.39 ms
+Estimating time: 2250.7 ms
+Extracting candidates time: 2832.82 ms
+Computing distance time: 3562.24 ms
+Querying time: 383 ms
+        coCEOs-Est2 query time: 0.3833210469747428
+        coCEOs-Est2 accuracy:  0.8313999999999976
+        
+        
+
