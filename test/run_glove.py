@@ -2,15 +2,19 @@ import analysis_utils as au
 import numpy as np
 import CEOs as ceos
 
-X = np.loadtxt("/shared/Dataset/ANNS/FalconnPP/Yahoo_X_624961_300.txt", dtype=np.float32, delimiter=None)
-Q = np.loadtxt("/shared/Dataset/ANNS/FalconnPP/Yahoo_Q_1000_300.txt", dtype=np.float32, delimiter=None)
+d = 200
 
-Q = Q[:1000, :] 
+X = np.loadtxt("/shared/Dataset/ANNS/FalconnPP/Glove_X_1183514_200.txt", dtype=np.float32, delimiter=None)
+Q = np.loadtxt("/shared/Dataset/ANNS/FalconnPP/Glove_Q_1000_200.txt", dtype=np.float32, delimiter=None)
+
+X = X.reshape((-1, d))
+Q = Q.reshape((-1, d))
+
+X = X / (np.linalg.norm(X, axis=1, keepdims=True) + 1e-10)
+Q = Q / (np.linalg.norm(Q, axis=1, keepdims=True) + 1e-10)
 
 X_t = np.transpose(X)
 Q_t = np.transpose(Q)
-
-n_features = X_t.shape[0]
 
 n_proj = 1024
 repeats = 1
@@ -19,7 +23,7 @@ top_points = 100
 seed = 1
 k = 10
 
-index = ceos.coCEOs(n_features)
+index = ceos.coCEOs(d)
 index.setIndexParam(n_proj=n_proj, n_repeats=repeats, n_threads=numThreads, random_seed=seed, top_points=top_points)
 index.build(X_t)
 
