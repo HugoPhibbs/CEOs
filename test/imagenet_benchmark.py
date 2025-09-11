@@ -24,13 +24,15 @@ if __name__ == '__main__':
     # Q /= norms # Q = np.array(Q, copy=True)  # makes it writable
 
     #-------------------------------------------------------------------
+    savePath = "/shared/Dataset/ANNS/CEOs/"
     n_threads = 32
     # k = 100
     # exact_kNN = utils.faissBF(X, Q, k, n_threads)
     # exact_kNN = exact_kNN.astype(np.int32)
     # np.save(path + "Imagenet_Cosine_k_100_indices.npy", exact_kNN)    # shape: (n, k), dtype: int32
     # exact_kNN = np.load(path + "Imagenet_Cosine_k_100_indices.npy")  # shape: (n, k), dtype: int32
-    exact_kNN = np.load(path + "Imagenet_Dot_k_100_indices.npy")  # shape: (n, k), dtype: int32
+
+    exact_kNN = np.load(savePath + "Imagenet_Dot_k_100_indices.npy")  # shape: (n, k), dtype: int32
 
     k = 10
     exact_kNN = exact_kNN[: , :k]
@@ -38,29 +40,41 @@ if __name__ == '__main__':
     #-------------------------------------------------------------------
     probed_vectors = 20
     n_cand = 100
-    n_repeats = 2**3
-    D = 2**10
-    print("\nCEOs")
+    n_repeats = 2**6
 
-    utils.ceos_est(exact_kNN, X, Q, k, D, probed_vectors, n_cand, n_repeats, n_threads)
-
-    #-------------------------------------------------------------------
-    top_m = 100
-    probed_vectors = 160
-    n_cand = 2000
-    n_repeats = 2**3
     D = 2**10
 
-    print("\ncoCEOs-est")
-    utils.coceos_est(exact_kNN, X, Q, k, D, top_m, probed_vectors, n_cand, n_repeats, n_threads)
+    # print("\nCEOs")
+    # utils.ceos_est(exact_kNN, X, Q, k, D, probed_vectors, n_cand, n_repeats, n_threads)
+
     #-------------------------------------------------------------------
     top_m = 50
-    probed_vectors = 120
-    probed_points = top_m
-    n_repeats = 2**3
+    probed_vectors = n_repeats * 40
+    n_cand = 2000
     D = 2**10
-    print("\nCEOs-hash")
-    utils.ceos_hash(exact_kNN, X, Q, k, D, top_m, probed_vectors, probed_points, n_repeats, n_threads)
+    iProbe = 0
+
+    print("\ncoCEOs-est1")
+    utils.coceos_est1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads)
+
+    print("\ncoCEOs-est2")
+    D = 2**8
+    iProbe = 16
+    utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads)
+    #-------------------------------------------------------------------
+    top_m = 50
+    probed_vectors = n_repeats * 40
+    probed_points = top_m
+    iProbe = 0
+    D = 2**10
+    # print("\nCEOs-hash1")
+    # utils.ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads)
+
+    print("\nCEOs-hash2")
+    D = 2**8
+    iProbe = 16
+    utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads)
+
     #-------------------------------------------------------------------
     # print("\nHnswLib")
     # utils.hnswMIPS(exact_kNN, X, Q, k, n_threads=n_threads)

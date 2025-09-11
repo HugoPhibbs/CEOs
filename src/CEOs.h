@@ -24,8 +24,8 @@ protected:
 
     int n_proj = 256;
     int n_rotate = 3;
-    int top_m = 100; // query might use a subset of closest/furthest points to the vector
-    int iProbe = 10; // 2-layer: For each point, we put it into iProbe buckets (iProbe in Falcon++) - so each layer need to extract iProbe vectors
+    int top_m = 50; // query might use a subset of closest/furthest points to the vector
+    int iProbe = 1; // 2-layer: For each point, we put it into iProbe buckets (iProbe in Falcon++) - so each layer need to extract iProbe vectors
     
     int n_repeats = 1;
     int seed = -1;
@@ -37,12 +37,10 @@ protected:
     // - CEOs Est: n x (n_proj * repeat) where the first (n_proj x n) is for the first set of random rotation
     // - coCEOs: (4 * top-points) x (n_proj * repeat)
     // the first/second is index/projection value of close points, the third/forth is index/projection value of far points
-    MatrixXf matrix_P;
+    MatrixXf matrix_P; // used in CEOs-Est
+
     vector<vector<IFPair>> vec2D_Pair_Buckets;
     vector<vector<int>> vec2D_Buckets;
-
-    // coCEOs-hash: (2 * indexBucketSize) x (n_proj * repeat)
-    MatrixXi matrix_H;
 
     int fhtDim;
 
@@ -55,7 +53,7 @@ public:
     // Query param
     int n_probed_vectors = 10;
     int n_probed_points = 10; // query might use a subset of closest/furthest points to the vector
-    int n_cand = 10;
+    int n_cand = 100;
     bool centering = false;
 
     // function to initialize private variables
@@ -74,7 +72,7 @@ public:
 
         vecCenter = RowVectorXf::Zero(n_features);
 
-        set_threads(t);
+        set_threads(t); // since there is the case of -1
         seed = s;
 
         // setting fht dimension. Note n_proj must be 2^a, and > n_features
@@ -93,7 +91,6 @@ public:
     void clear() {
         matrix_X.resize(0, 0);
         matrix_P.resize(0, 0);
-        matrix_H.resize(0, 0);
 
         vecCenter.resize(0);
 
@@ -103,11 +100,6 @@ public:
         vec2D_Pair_Buckets.clear();
         vec2D_Buckets.clear();
     }
-
-    // Will use for setting candidate for re-rank
-//    void set_qProbes(int p){
-//        qProbes = p;
-//    }
 
     void set_threads(int t)
     {
@@ -130,12 +122,7 @@ public:
     void build_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &);
     tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &, int, bool=false);
 
-    //================= High memory version =========================
-    void build_coCEOs_Est_HighMem(const Ref<const RowMajorMatrixXf> &);
-    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_coCEOs_Est_HighMem(const Ref<const RowMajorMatrixXf> &, int, bool=false);
-    void build_CEOs_Hash_HighMem(const Ref<const RowMajorMatrixXf> &);
-    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_CEOs_Hash_HighMem(const Ref<const RowMajorMatrixXf> &, int, bool=false);
-    //================================================================
+
 
     ~CEOs() { clear(); }
 };

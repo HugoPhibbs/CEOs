@@ -75,14 +75,11 @@ int main(int nargs, char** args) {
 
     // coCEOs
     streamCEOs coceos(iParam.n_features);
-    coceos.set_streamCEOsParam(iParam.n_proj, iParam.n_repeats, iParam.top_m, iParam.n_threads, iParam.seed);
-    coceos.build(MATRIX_X);
-    coceos.n_cand = qParam.n_cand;
+    coceos.set_streamCEOsParam(iParam.n_proj, iParam.n_repeats, iParam.top_m, iParam.iProbe, iParam.n_threads, iParam.seed);
+    coceos.build1(MATRIX_X);
     coceos.n_probed_vectors = qParam.n_probed_vectors;
-    coceos.estimate_search(MATRIX_Q, qParam.n_neighbors, qParam.verbose);
-
-    coceos.update(MATRIX_Q, 1000);
-    coceos.hash_search(MATRIX_Q, qParam.n_neighbors, qParam.verbose);
+    coceos.update1(MATRIX_Q, 1000);
+    coceos.search1(MATRIX_Q, qParam.n_neighbors, qParam.verbose);
 
     return 0;
 

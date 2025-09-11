@@ -1,0 +1,239 @@
+StreamCEOs-hash1
+Building streamCEOs-Hash index...
+n_features: 200
+n_repeats: 64
+n_proj: 1024
+top_m: 50
+fhtDim: 1024
+n_points: 118351
+Copying data time (s): 0.046
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 383.886
+Extracting top-m points time (s): 0.668545
+streamCEOs-Hash1 constructing time (s): 12.873
+streamCEOs-hash1 index time: 12.874092700018082
+Faiss bruteforce index time: 0.041765809000935405
+Faiss bruteforce query time: 0.7689212230034173
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 672.399
+Computing distance time (ms): 2770.11
+StreamCEOs-Hash1 querying time (ms): 125
+        streamCEOs-hash1 query time: 0.12568033498246223
+        streamCEOs-hash1 Accuracy:  0.6806999999999986
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 38.06 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 383.527
+Extracting top-m points time (s): 0.161318
+streamCEOs-Hash1 updating time (s): 12.687
+        streamCEOs-hash1 update index time: 12.68790987104876
+Faiss bruteforce index time: 0.04387087997747585
+Faiss bruteforce query time: 0.8519407860003412
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 675.123
+Computing distance time (ms): 2787.01
+StreamCEOs-Hash1 querying time (ms): 122
+        streamCEOs-hash1 query time: 0.12295599095523357
+        streamCEOs-hash1 Accuracy:  0.684199999999999
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 40.301 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 381.033
+Extracting top-m points time (s): 0.165058
+streamCEOs-Hash1 updating time (s): 12.856
+        streamCEOs-hash1 update index time: 12.856331256043632
+Faiss bruteforce index time: 0.043359518982470036
+Faiss bruteforce query time: 0.862109893001616
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 673.855
+Computing distance time (ms): 2756.55
+StreamCEOs-Hash1 querying time (ms): 125
+        streamCEOs-hash1 query time: 0.1254697340191342
+        streamCEOs-hash1 Accuracy:  0.6793999999999983
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 38.152 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 382.772
+Extracting top-m points time (s): 0.164782
+streamCEOs-Hash1 updating time (s): 12.808
+        streamCEOs-hash1 update index time: 12.80874930601567
+Faiss bruteforce index time: 0.042785575962625444
+Faiss bruteforce query time: 0.875924319960177
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 694.983
+Computing distance time (ms): 2712.26
+StreamCEOs-Hash1 querying time (ms): 127
+        streamCEOs-hash1 query time: 0.12755849602399394
+        streamCEOs-hash1 Accuracy:  0.6779999999999987
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 40.045 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 383.088
+Extracting top-m points time (s): 0.162819
+streamCEOs-Hash1 updating time (s): 12.805
+        streamCEOs-hash1 update index time: 12.805823393980972
+Faiss bruteforce index time: 0.04448894696542993
+Faiss bruteforce query time: 0.7674565020133741
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 672.777
+Computing distance time (ms): 2761.69
+StreamCEOs-Hash1 querying time (ms): 123
+        streamCEOs-hash1 query time: 0.12325608998071402
+        streamCEOs-hash1 Accuracy:  0.6764999999999989
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 42.504 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 386.891
+Extracting top-m points time (s): 0.159724
+streamCEOs-Hash1 updating time (s): 12.781
+        streamCEOs-hash1 update index time: 12.781393547018524
+Faiss bruteforce index time: 0.04203059698920697
+Faiss bruteforce query time: 0.8640476610162295
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 661.595
+Computing distance time (ms): 2794.5
+StreamCEOs-Hash1 querying time (ms): 118
+        streamCEOs-hash1 query time: 0.11886784195667133
+        streamCEOs-hash1 Accuracy:  0.6760999999999996
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 40.764 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 382.882
+Extracting top-m points time (s): 0.15806
+streamCEOs-Hash1 updating time (s): 12.622
+        streamCEOs-hash1 update index time: 12.622480967955198
+Faiss bruteforce index time: 0.04254416096955538
+Faiss bruteforce query time: 0.8462597980396822
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 656.371
+Computing distance time (ms): 2799.8
+StreamCEOs-Hash1 querying time (ms): 118
+        streamCEOs-hash1 query time: 0.11828473903005943
+        streamCEOs-hash1 Accuracy:  0.6734999999999981
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 36.066 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 383.774
+Extracting top-m points time (s): 0.159457
+streamCEOs-Hash1 updating time (s): 12.753
+        streamCEOs-hash1 update index time: 12.753513743984513
+Faiss bruteforce index time: 0.04361714702099562
+Faiss bruteforce query time: 0.8069923439761624
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 663.145
+Computing distance time (ms): 2743.86
+StreamCEOs-Hash1 querying time (ms): 126
+        streamCEOs-hash1 query time: 0.12704436696367338
+        streamCEOs-hash1 Accuracy:  0.6856999999999993
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 38.982 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 384.211
+Extracting top-m points time (s): 0.161942
+streamCEOs-Hash1 updating time (s): 12.913
+        streamCEOs-hash1 update index time: 12.91395402298076
+Faiss bruteforce index time: 0.04275622498244047
+Faiss bruteforce query time: 0.8096884670085274
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 683.486
+Computing distance time (ms): 2743.8
+StreamCEOs-Hash1 querying time (ms): 121
+        streamCEOs-hash1 query time: 0.12186458997894078
+        streamCEOs-hash1 Accuracy:  0.6737999999999994
+Updating CEOs-Hash1 index...
+Updating data time (in ms): 36.496 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash1 index (including data) in GB: 0.137006
+Projecting time (s): 390.386
+Extracting top-m points time (s): 0.166953
+streamCEOs-Hash1 updating time (s): 13.101
+        streamCEOs-hash1 update index time: 13.101059243956115
+Faiss bruteforce index time: 0.04502091300673783
+Faiss bruteforce query time: 0.8593368679867126
+n_probed_vectors: 160
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 695.337
+Computing distance time (ms): 2732.08
+StreamCEOs-Hash1 querying time (ms): 124
+        streamCEOs-hash1 query time: 0.12496693700086325
+        streamCEOs-hash1 Accuracy:  0.678999999999999
+        
+        
+        
+===================
+
+CEOs-hash
+Building CEOs-Hash index...
+n_points: 1183514
+n_features: 200
+n_repeats: 64
+n_proj: 1024
+top_m: 50
+centering: 0
+fhtDim: 1024
+Copying data time (s): 1.972
+Size of data set in GB: 0.881787
+Size of coCEOs-Est index (including data) in GB: 0.906201
+Projecting time (s): 3570.91
+Extracting top-m points time (s): 0.235561
+CEOs-Hash1 constructing time (s): 120.506
+CEOs-Hash index time (s): 120.50704933196539
+n_probed_vectors = 160, n_probed_points = 50
+n_probedVectors: 160
+n_probedPoints: 50
+n_cand: 8000
+n_threads: 32
+n_queries: 1000
+Projecting and extracting top-vectors time (ms): 712.681
+Computing distance time (ms): 2629.08
+Querying time (ms): 125
+        CEOs-Hash query time (s): 0.12595322099514306
+        CEOs-Hash accuracy:  0.3101999999999998        
+

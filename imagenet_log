@@ -1,0 +1,634 @@
+CEOs
+Building CEOs index...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 1024
+fhtDim: 1024
+Copying data time (in seconds): 0.693
+Size of CEOs index (including X) in GB: 72.7303
+Size of data set in GB: 1.30779
+Index construction time (in seconds): 39.873
+CEOs index time: 39.87368973297998
+CEOs top-proj:  20
+n_probed_vectors: 20
+n_probed_points: 10
+n_cand: 100
+n_threads: 32
+n_queries: 200
+Test
+Projecting and extracting top-vectors time: 28.977 ms
+Estimating time: 41696.5 ms
+Extracting candidates time: 1026.09 ms
+Computing distance time: 19.207 ms
+Querying time: 1455 ms
+        CEOs query time: 1.4552037800312974
+        CEOs accuracy:  0.7050000000000003
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 1024
+top_m: 100
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 2.937
+Size of data set in GB: 1.30779
+Size of coCEOs-Est index (including X) in GB: 1.31999
+Projecting time: 891390 ms
+Extracting top-m points time: 53.028 ms
+Constructing time (in seconds): 32.149
+coCEOs-Est index time: 32.149531795002986
+top-proj = 160, top-points = 100
+n_probed_vectors: 160
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Projecting and extracting top-vectors time: 24.001 ms
+Estimating time: 59.85 ms
+Extracting candidates time: 78.113 ms
+Computing distance time: 59.443 ms
+Querying time: 8 ms
+        coCEOs-Est query time: 0.008487288025207818
+        coCEOs-Est accuracy:  0.785
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 4
+top_m: 100
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.053
+Total points in all buckets (in millions): 75.9137
+Size of coCEOs-Est2 (without data) index in GB: 0.613873
+coCEOs-Est2 index time: 8.548036099004094
+top-proj = 160, top-points = 100
+n_probed_vectors: 160
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 2000
+Avg number of probes per point: 11804.4
+Projecting and extracting top-vectors time: 106.427 ms
+Estimating time: 63.443 ms
+Extracting candidates time: 86.033 ms
+Computing distance time: 111.98 ms
+Querying time: 14 ms
+        coCEOs-Est2 query time: 0.014816741982940584
+        coCEOs-Est2 accuracy:  0.44500000000000006
+
+CEOs-hash1
+Building CEOs-Hash index...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 1024
+top_m: 50
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 3.024
+Size of data set in GB: 1.30779
+Size of coCEOs-Est index (including data) in GB: 1.31389
+Projecting time: 863442 ms
+Extracting top-m points time: 19.551 ms
+Constructing time (in seconds): 31.191
+CEOs-Hash index time (s): 31.191977214999497
+n_probed_vectors = 160, n_probed_points = 50
+n_probedVectors: 160
+n_probedPoints: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Projecting and extracting top-vectors time: 24.937 ms
+Estimating time: 0 ms
+Computing distance time: 172.321 ms
+Querying time: 8 ms
+        CEOs-Hash query time (s): 0.008299814013298601
+        CEOs-Hash accuracy:  0.8190000000000007
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 4
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 2.903
+Total points in all buckets (in millions): 49.9426
+Size of CEOs-Hash2 (without data) index in GB: 0.234069
+CEOs-Hash2 index time (s): 7.394466297002509
+n_probed_vectors = 160, n_probed_points = 50
+n_probed_vectors: 160
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 6243.18
+Avg number of probes per point: 6576.52
+Projecting and extracting top-vectors time: 21.04 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 403.164 ms
+Querying time: 15 ms
+        CEOs-Hash2 query time (s): 0.015966402017511427
+        CEOs-Hash2 accuracy:  0.3715000000000002
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 1
+top_m: 100
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.171
+Total points in all buckets (in millions): 10.6745
+Size of coCEOs-Est2 (without data) index in GB: 0.126406
+coCEOs-Est2 index time: 6.100732335995417
+top-proj = 160, top-points = 100
+n_probed_vectors: 160
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 1990.2
+Avg number of probes per point: 3809.49
+Projecting and extracting top-vectors time: 105.225 ms
+Estimating time: 47.028 ms
+Extracting candidates time: 36.1 ms
+Computing distance time: 120.798 ms
+Querying time: 10 ms
+        coCEOs-Est2 query time: 0.010872755025047809
+        coCEOs-Est2 accuracy:  0.11200000000000003
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 1
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.108
+Total points in all buckets (in millions): 8.59632
+Size of CEOs-Hash2 (without data) index in GB: 0.0788988
+CEOs-Hash2 index time (s): 6.0224011720274575
+n_probed_vectors = 160, n_probed_points = 50
+n_probed_vectors: 160
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 2317.4
+Avg number of probes per point: 2329.58
+Projecting and extracting top-vectors time: 18.735 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 149.041 ms
+Querying time: 6 ms
+        CEOs-Hash2 query time (s): 0.006646280991844833
+        CEOs-Hash2 accuracy:  0.08149999999999993
+
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 8
+top_m: 100
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.129
+Total points in all buckets (in millions): 145.11
+Size of coCEOs-Est2 (without data) index in GB: 1.14126
+coCEOs-Est2 index time: 14.495137150981463
+top-proj = 160, top-points = 100
+n_probed_vectors: 160
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 2000
+Avg number of probes per point: 15073.2
+Projecting and extracting top-vectors time: 103.336 ms
+Estimating time: 70.759 ms
+Extracting candidates time: 94.881 ms
+Computing distance time: 111.711 ms
+Querying time: 13 ms
+        coCEOs-Est2 query time: 0.013735465006902814
+        coCEOs-Est2 accuracy:  0.623
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 8
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.054
+Total points in all buckets (in millions): 82.6672
+Size of CEOs-Hash2 (without data) index in GB: 0.360325
+CEOs-Hash2 index time (s): 12.19930254900828
+n_probed_vectors = 160, n_probed_points = 50
+n_probed_vectors: 160
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 7024.83
+Avg number of probes per point: 7769.15
+Projecting and extracting top-vectors time: 21.363 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 436.813 ms
+Querying time: 17 ms
+        CEOs-Hash2 query time (s): 0.017943637969437987
+        CEOs-Hash2 accuracy:  0.6395000000000004
+
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 1024
+top_m: 100
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 3.221
+Size of data set in GB: 1.30779
+Size of coCEOs-Est index (including X) in GB: 1.31999
+Projecting time: 880314 ms
+Extracting top-m points time: 341.095 ms
+Constructing time (in seconds): 32.495
+coCEOs-Est index time: 32.49535410100361
+top-proj = 160, top-points = 100
+n_probed_vectors: 160
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Projecting and extracting top-vectors time: 26.443 ms
+Estimating time: 98.227 ms
+Extracting candidates time: 80.177 ms
+Computing distance time: 61.797 ms
+Querying time: 10 ms
+        coCEOs-Est query time: 0.010864451003726572
+        coCEOs-Est accuracy:  0.7995000000000008
+
+===========================
+Increase iProbe does not increase the index size --> points are dense in some area
+Increase iProbe increase accuracy
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 16
+top_m: 100
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 2.779
+Total points in all buckets (in millions): 194.844
+Size of coCEOs-Est2 (without data) index in GB: 1.53416
+coCEOs-Est2 index time: 29.244555064011365
+top-proj = 160, top-points = 100
+n_probed_vectors: 160
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 2000
+Avg number of probes per point: 15964.4
+Projecting and extracting top-vectors time: 104.415 ms
+Estimating time: 73.915 ms
+Extracting candidates time: 94.206 ms
+Computing distance time: 109.038 ms
+Querying time: 14 ms
+        coCEOs-Est2 query time: 0.014591314014978707
+        coCEOs-Est2 accuracy:  0.7610000000000003
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 16
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 2.771
+Total points in all buckets (in millions): 99.988
+Size of CEOs-Hash2 (without data) index in GB: 0.429213
+CEOs-Hash2 index time (s): 23.86281095497543
+n_probed_vectors = 160, n_probed_points = 50
+n_probed_vectors: 160
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 6665.38
+Avg number of probes per point: 7994.62
+Projecting and extracting top-vectors time: 22.447 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 378.028 ms
+Querying time: 15 ms
+        CEOs-Hash2 query time (s): 0.01605465996544808
+        CEOs-Hash2 accuracy:  0.8245000000000009
+        
+        
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 1024
+top_m: 100
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 3.211
+Size of data set in GB: 1.30779
+Size of coCEOs-Est index (including X) in GB: 1.31999
+Projecting time: 892859 ms
+Extracting top-m points time: 336.193 ms
+Constructing time (in seconds): 32.48
+coCEOs-Est index time: 32.48098903003847
+top-proj = 320, top-points = 100
+n_probed_vectors: 320
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Projecting and extracting top-vectors time: 33.689 ms
+Estimating time: 268.244 ms
+Extracting candidates time: 110.918 ms
+Computing distance time: 61.971 ms
+Querying time: 19 ms
+        coCEOs-Est query time: 0.01935492898337543
+        coCEOs-Est accuracy:  0.8015000000000007
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 16
+top_m: 100
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.071
+Total points in all buckets (in millions): 194.748
+Size of coCEOs-Est2 (without data) index in GB: 1.53347
+coCEOs-Est2 index time: 28.737450451997574
+top-proj = 320, top-points = 100
+n_probed_vectors: 320
+n_probed_points: 100
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 99.625
+Avg number of probes per point: 31880
+Projecting and extracting top-vectors time: 247.286 ms
+Estimating time: 46.034 ms
+Extracting candidates time: 6.529 ms
+Computing distance time: 6.208 ms
+Querying time: 13 ms
+        coCEOs-Est2 query time: 0.0139938949723728
+        coCEOs-Est2 accuracy:  0.03949999999999998
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 16
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.084
+Total points in all buckets (in millions): 99.929
+Size of CEOs-Hash2 (without data) index in GB: 0.428956
+CEOs-Hash2 index time (s): 24.133295355015434
+n_probed_vectors = 320, n_probed_points = 50
+n_probed_vectors: 320
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 12333.1
+Avg number of probes per point: 15981
+Projecting and extracting top-vectors time: 25.583 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 732.732 ms
+Querying time: 29 ms
+        CEOs-Hash2 query time (s): 0.029507177998311818
+        CEOs-Hash2 accuracy:  0.9275000000000009
+(base) npha145@SC431074:~/Uni of Auckland Dropbox/Ninh Pham/Working/_Code/C++/CEOs$ python3 test/imagenet_benchmark.py 
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 1024
+top_m: 50
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 3.185
+Size of data set in GB: 1.30779
+Size of coCEOs-Est index (including X) in GB: 1.31389
+Projecting time: 870545 ms
+Extracting top-m points time: 96.33 ms
+Constructing time (in seconds): 32.339
+coCEOs-Est index time: 32.33989315398503
+top-proj = 320, top-points = 50
+n_probed_vectors: 320
+n_probed_points: 50
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Projecting and extracting top-vectors time: 34.461 ms
+Estimating time: 86.013 ms
+Extracting candidates time: 82.574 ms
+Computing distance time: 60.447 ms
+Querying time: 10 ms
+        coCEOs-Est query time: 0.010206281032878906
+        coCEOs-Est accuracy:  0.7190000000000002
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 16
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.16
+Total points in all buckets (in millions): 99.9427
+Size of coCEOs-Est2 (without data) index in GB: 0.811153
+coCEOs-Est2 index time: 25.050919500004966
+top-proj = 320, top-points = 50
+n_probed_vectors: 320
+n_probed_points: 50
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 50
+Avg number of probes per point: 16000
+Projecting and extracting top-vectors time: 255.128 ms
+Estimating time: 25.054 ms
+Extracting candidates time: 3.381 ms
+Computing distance time: 3.171 ms
+Querying time: 12 ms
+        coCEOs-Est2 query time: 0.012646772025618702
+        coCEOs-Est2 accuracy:  0.03649999999999998
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 8
+n_proj: 256
+iProbe: 16
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.084
+Total points in all buckets (in millions): 99.9726
+Size of CEOs-Hash2 (without data) index in GB: 0.429132
+CEOs-Hash2 index time (s): 24.210837907972746
+n_probed_vectors = 320, n_probed_points = 50
+n_probed_vectors: 320
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 12213.5
+Avg number of probes per point: 15981.9
+Projecting and extracting top-vectors time: 24.806 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 734.083 ms
+Querying time: 29 ms
+        CEOs-Hash2 query time (s): 0.029833784035872668
+        CEOs-Hash2 accuracy:  0.9260000000000005
+
+coCEOs-est1
+Building coCEOs-Est1 index...
+n_points: 2340373
+n_features: 150
+n_repeats: 64
+n_proj: 1024
+top_m: 50
+centering: 0
+fhtDim: 1024
+Copying data time (in seconds): 3.176
+Size of data set in GB: 1.30779
+Size of coCEOs-Est index (including X) in GB: 1.35661
+Projecting time: 6.96284e+06 ms
+Extracting top-m points time: 1135.24 ms
+Constructing time (in seconds): 232.15
+coCEOs-Est index time: 232.15038321603788
+top-proj = 2560, top-points = 50
+n_probed_vectors: 2560
+n_probed_points: 50
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Projecting and extracting top-vectors time: 300.873 ms
+Estimating time: 1031.02 ms
+Extracting candidates time: 187.904 ms
+Computing distance time: 85.217 ms
+Querying time: 66 ms
+        coCEOs-Est query time: 0.0669685120228678
+        coCEOs-Est accuracy:  0.8125000000000001
+
+coCEOs-est2
+Building coCEOs-Estimate index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 64
+n_proj: 256
+iProbe: 16
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.214
+Total points in all buckets (in millions): 958.811
+Size of coCEOs-Est2 (without data) index in GB: 6.49176
+coCEOs-Est2 index time: 178.04783866804792
+top-proj = 2560, top-points = 50
+n_probed_vectors: 2560
+n_probed_points: 50
+n_cand: 2000
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 50
+Avg number of probes per point: 128000
+Projecting and extracting top-vectors time: 70080.2 ms
+Estimating time: 195.863 ms
+Extracting candidates time: 21.719 ms
+Computing distance time: 3.142 ms
+Querying time: 2969 ms
+        coCEOs-Est2 query time: 2.9693733770400286
+        coCEOs-Est2 accuracy:  0.04199999999999998
+
+CEOs-hash2
+Building CEOs-Hash index (2 layers)...
+n_points: 2340373
+n_features: 150
+n_repeats: 64
+n_proj: 256
+iProbe: 16
+top_m: 50
+centering: 0
+fhtDim: 256
+Copying data time (in seconds): 3.232
+Total points in all buckets (in millions): 959.288
+Size of CEOs-Hash2 (without data) index in GB: 3.43465
+CEOs-Hash2 index time (s): 171.6229538130574
+n_probed_vectors = 2560, n_probed_points = 50
+n_probed_vectors: 2560
+n_probed_points: 50
+n_cand: 50
+n_threads: 32
+n_queries: 200
+Avg number of distance per point: 61289.2
+Avg number of probes per point: 127859
+Projecting and extracting top-vectors time: 122.818 ms
+Estimating time: 0 ms
+Extracting candidates time: 0 ms
+Computing distance time: 3924.48 ms
+Querying time: 162 ms
+        CEOs-Hash2 query time (s): 0.1625087300199084
+        CEOs-Hash2 accuracy:  0.9995
+

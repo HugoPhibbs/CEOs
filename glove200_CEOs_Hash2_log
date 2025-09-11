@@ -1,3 +1,231 @@
+StreamCEOs-hash2
+Building streamCEOs-Hash index...
+n_features: 200
+n_repeats: 256
+n_proj: 256
+top_m: 20
+fhtDim: 256
+n_points: 118351
+Copying data time (s): 0.046
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.03895
+Projecting time (s): 573.346
+Extracting top-m points time (s): 177.024
+streamCEOs-Hash2 constructing time (s): 40.89
+streamCEOs-hash2 index time: 40.89033098501386
+Faiss bruteforce index time: 0.04048308602068573
+Faiss bruteforce query time: 0.7877577869803645
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7908.1
+Avg number of probes per point: 9154.42
+Projecting and extracting top-vectors time (ms): 1534.42
+Computing distance time (ms): 2688.9
+StreamCEOs-Hash2 querying time (ms): 147
+        streamCEOs-hash2 query time: 0.14722497400362045
+        streamCEOs-hash2 Accuracy:  0.9221999999999959
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 37.315 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.04824
+Projecting time (s): 559.927
+Extracting top-m points time (s): 2.35262
+streamCEOs-Hash2 updating time (s): 39.091
+        streamCEOs-hash2 update index time: 39.09163903200533
+Faiss bruteforce index time: 0.042502094991505146
+Faiss bruteforce query time: 0.8571862740209326
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7911.13
+Avg number of probes per point: 9156.31
+Projecting and extracting top-vectors time (ms): 1486.88
+Computing distance time (ms): 2639.94
+StreamCEOs-Hash2 querying time (ms): 148
+        streamCEOs-hash2 query time: 0.1484528350410983
+        streamCEOs-hash2 Accuracy:  0.920699999999996
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 36.237 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.0442
+Projecting time (s): 538.858
+Extracting top-m points time (s): 2.30648
+streamCEOs-Hash2 updating time (s): 39.173
+        streamCEOs-hash2 update index time: 39.1730939510162
+Faiss bruteforce index time: 0.0420728960307315
+Faiss bruteforce query time: 0.7958455390180461
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7907.58
+Avg number of probes per point: 9155.06
+Projecting and extracting top-vectors time (ms): 1435.59
+Computing distance time (ms): 2606.16
+StreamCEOs-Hash2 querying time (ms): 150
+        streamCEOs-hash2 query time: 0.1506260199821554
+        streamCEOs-hash2 Accuracy:  0.9254999999999962
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 40.151 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.03885
+Projecting time (s): 550.124
+Extracting top-m points time (s): 2.25008
+streamCEOs-Hash2 updating time (s): 38.916
+        streamCEOs-hash2 update index time: 38.916891294997185
+Faiss bruteforce index time: 0.045119950955267996
+Faiss bruteforce query time: 0.804964118055068
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7906.87
+Avg number of probes per point: 9154.35
+Projecting and extracting top-vectors time (ms): 1425.75
+Computing distance time (ms): 2601.98
+StreamCEOs-Hash2 querying time (ms): 143
+        streamCEOs-hash2 query time: 0.14352655602851883
+        streamCEOs-hash2 Accuracy:  0.9189999999999965
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 37.606 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.04444
+Projecting time (s): 554.052
+Extracting top-m points time (s): 2.2122
+streamCEOs-Hash2 updating time (s): 38.079
+        streamCEOs-hash2 update index time: 38.079446343996096
+Faiss bruteforce index time: 0.04219790000934154
+Faiss bruteforce query time: 0.7544372779666446
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7907.54
+Avg number of probes per point: 9155.04
+Projecting and extracting top-vectors time (ms): 1466.44
+Computing distance time (ms): 2677.77
+StreamCEOs-Hash2 querying time (ms): 145
+        streamCEOs-hash2 query time: 0.14520242903381586
+        streamCEOs-hash2 Accuracy:  0.9211999999999961
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 39.752 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.0432
+Projecting time (s): 537.626
+Extracting top-m points time (s): 2.22518
+streamCEOs-Hash2 updating time (s): 38.278
+        streamCEOs-hash2 update index time: 38.27812947699567
+Faiss bruteforce index time: 0.045576053962577134
+Faiss bruteforce query time: 0.8453734429785982
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7911.45
+Avg number of probes per point: 9155.79
+Projecting and extracting top-vectors time (ms): 1447.11
+Computing distance time (ms): 2603.05
+StreamCEOs-Hash2 querying time (ms): 145
+        streamCEOs-hash2 query time: 0.14609011099673808
+        streamCEOs-hash2 Accuracy:  0.9250999999999951
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 38.132 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.04502
+Projecting time (s): 552.356
+Extracting top-m points time (s): 2.23651
+streamCEOs-Hash2 updating time (s): 39.099
+        streamCEOs-hash2 update index time: 39.09921814996051
+Faiss bruteforce index time: 0.0442244210280478
+Faiss bruteforce query time: 0.8354437930393033
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7911.02
+Avg number of probes per point: 9156.92
+Projecting and extracting top-vectors time (ms): 1449.62
+Computing distance time (ms): 2592.53
+StreamCEOs-Hash2 querying time (ms): 147
+        streamCEOs-hash2 query time: 0.14753257599659264
+        streamCEOs-hash2 Accuracy:  0.9231999999999959
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 39.92 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.04486
+Projecting time (s): 549.671
+Extracting top-m points time (s): 2.19975
+streamCEOs-Hash2 updating time (s): 39.161
+        streamCEOs-hash2 update index time: 39.16127762797987
+Faiss bruteforce index time: 0.04396739398362115
+Faiss bruteforce query time: 0.8567469929694198
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7907.45
+Avg number of probes per point: 9156.22
+Projecting and extracting top-vectors time (ms): 1430.51
+Computing distance time (ms): 2601.66
+StreamCEOs-Hash2 querying time (ms): 147
+        streamCEOs-hash2 query time: 0.1475336980074644
+        streamCEOs-hash2 Accuracy:  0.918299999999996
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 40.736 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.04596
+Projecting time (s): 533.766
+Extracting top-m points time (s): 2.19867
+streamCEOs-Hash2 updating time (s): 38.523
+        streamCEOs-hash2 update index time: 38.52343205502257
+Faiss bruteforce index time: 0.043100893031805754
+Faiss bruteforce query time: 0.8576558490167372
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7910.86
+Avg number of probes per point: 9156.97
+Projecting and extracting top-vectors time (ms): 1443.35
+Computing distance time (ms): 2600.99
+StreamCEOs-Hash2 querying time (ms): 145
+        streamCEOs-hash2 query time: 0.14562529197428375
+        streamCEOs-hash2 Accuracy:  0.920099999999995
+Updating CEOs-Hash2 index...
+Updating data time (in ms): 40.057 ms
+n_points (after update): 118351
+Size of data set in GB: 0.0881784
+Size of streamCEOs-Hash2 index (including data) in GB: 7.04364
+Projecting time (s): 548.979
+Extracting top-m points time (s): 2.22396
+streamCEOs-Hash2 updating time (s): 39.216
+        streamCEOs-hash2 update index time: 39.216443012002856
+Faiss bruteforce index time: 0.043663165997713804
+Faiss bruteforce query time: 0.7716764730284922
+n_probed_vectors: 480
+n_cand: 9600
+n_threads: 32
+n_queries: 1000
+Avg number of distance per point: 7908.36
+Avg number of probes per point: 9154.35
+Projecting and extracting top-vectors time (ms): 1427.62
+Computing distance time (ms): 2649.79
+StreamCEOs-Hash2 querying time (ms): 146
+        streamCEOs-hash2 query time: 0.14635163900675252
+        streamCEOs-hash2 Accuracy:  0.9192999999999959
+
+
 =============================
 Increasing iProbe is not useful when top-m points are stable (index size is not changed), especially on dense areas
 When q hashed into dense areas, then higher iProbe is not meaningful.

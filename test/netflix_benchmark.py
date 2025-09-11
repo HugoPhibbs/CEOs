@@ -39,10 +39,10 @@ if __name__ == '__main__':
         X = np.hstack((2*X, norms)) # X = np.array(X, copy=True)  # makes it writable
         Q = np.hstack((Q, np.ones((Q.shape[0], 1)))) # Q = np.array(Q, copy=True)  # makes it writable
 
-    mu = X.mean(axis=0, keepdims=True)
+    # mu = X.mean(axis=0, keepdims=True)
     # X = X - mu
     # 2) draw rotation
-    R = utils.srht_rotation(X.shape[1])
+    # R = utils.srht_rotation(X.shape[1])
     # 3) rotate
     # X = X @ R
     # inverse (to map back): R_inv = R.T
@@ -77,61 +77,52 @@ if __name__ == '__main__':
     # utils.ceos_est(exact_kNN, X, Q, k, D, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed,verbose=verbose)
 
     #-------------------------------------------------------------------
-    top_m = 500
-    probed_vectors = 40
-    n_cand = 100
-    n_repeats = 2**1
-    D = 2**6
-    iProbe = 10
-    verbose = True
-    seed = -1
-
-    print("\ncoCEOs-est")
-
-    t1 = timeit.default_timer()
-    index = CEOs.CEOs(n, d)
-    index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
-    index.centering = False
-    index.build_coCEOs_Est(X)  # X must have n x d
-    t2 = timeit.default_timer()
-    print('coCEOs-Est index time: {}'.format(t2 - t1))
-
-    index.n_cand = n_cand
-    index.n_probed_vectors = probed_vectors
-    t1 = timeit.default_timer()
-    approx_kNN, approx_Dist = index.search_coCEOs_Est(Q, k, verbose)  # search
-    print("\tcoCEOs-Est query time: {}".format(timeit.default_timer() - t1))
-    print("\tcoCEOs-Est accuracy: ", utils.getAcc(exact_kNN, approx_kNN))
-
-    utils.coceos_est(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=False)
-
-    #-------------------------------------------------------------------
-    top_m = 20
-    probed_vectors = 100
-    probed_points = top_m
-    n_repeats = 2**3
-    D = 2**9
-    seed = 42
-    print("\nCEOs-hash")
-    utils.ceos_hash(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads, seed=seed)
-
-    #-------------------------------------------------------------------
-    # utils.streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats, n_threads)
-    # print("\nStreamCEOs-est")
-    #
     # top_m = 500
     # probed_vectors = 40
     # n_cand = 100
     # n_repeats = 2**1
-    # D = 2**9
-    # utils.streamCEOs_est(X, Q, k, top_m, probed_vectors, n_cand, n_repeats, n_threads)
+    # D = 2**6
+    # iProbe = 10
+    # verbose = True
+    # seed = -1
     #
-    # print("\nStreamCEOs-hash")
-    # top_m = 50
-    # probed_vectors = 40
-    # n_repeats = 2**1
+    # print("\ncoCEOs-est")
+    # utils.coceos_est1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=False)
+
+    #-------------------------------------------------------------------
+    # top_m = 20
+    # probed_vectors = 100
+    # probed_points = top_m
+    # iProbe = 0
+    # n_repeats = 2**3
     # D = 2**9
-    # utils.streamCEOs_hash(X, Q, k, top_m, probed_vectors, n_repeats, n_threads)
+    # seed = 42
+    # print("\nCEOs-hash")
+    # utils.ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads, seed=seed)
+
+    #-------------------------------------------------------------------
+
+    # top_m = 20
+    # probed_vectors = 100
+    # probed_points = top_m
+    # n_repeats = 2**3
+    # iProbe = 0
+    # D = 2**9
+    # seed = 42
+    # print("\nstreamCEOs-hash")
+    # utils.stream_ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads, seed=seed)
+
+    #-------------------------------------------------------------------
+
+    top_m = 20
+    probed_vectors = 20
+    probed_points = top_m
+    n_repeats = 2**1
+    iProbe = 0
+    D = 2**9
+
+    print("\nStreamCEOs-hash")
+    utils.stream_ceos_stream_hash(X, Q, k, D, top_m, iProbe, probed_vectors, n_repeats, n_threads, seed=seed)
 
     #-------------------------------------------------------------------
     # print("\nFaiss-IVF")

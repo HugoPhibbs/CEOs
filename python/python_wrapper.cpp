@@ -60,20 +60,21 @@ PYBIND11_MODULE(CEOs, m) { // Must be the same name with class CEOs
     .def(py::init<const int&>(),  py::arg("n_features"))
     //
     .def("setIndexParam", &streamCEOs::set_streamCEOsParam,
-    py::arg("n_proj"), py::arg("n_repeats") = 1, py::arg("top_points") = 1,
+    py::arg("n_proj"), py::arg("n_repeats") = 1, py::arg("top_m") = 10, py::arg("iProbe") = 1,
     py::arg("n_threads") = -1, py::arg("random_seed") = -1)
 //        .def_readwrite("n_threads", &CEOs::n_threads)
     .def_readwrite("n_probed_vectors", &streamCEOs::n_probed_vectors)
-    .def_readwrite("n_probed_points", &streamCEOs::n_probed_points)
-    .def_readwrite("n_cand", &streamCEOs::n_cand)
+//    .def_readwrite("n_cand", &streamCEOs::n_cand)
     .def("set_threads", &streamCEOs::set_threads, py::arg("n_threads"))
     .def("clear", &streamCEOs::clear)
     //
-    .def("build", &streamCEOs::build, py::arg("dataset"))
-    .def("update", &streamCEOs::update, py::arg("new_dataset"),py::arg("n_delPoints") = 0)
-    .def("estimate_search", &streamCEOs::estimate_search,
+    .def("build1", &streamCEOs::build1, py::arg("dataset"))
+    .def("update1", &streamCEOs::update1, py::arg("new_dataset"),py::arg("n_delPoints") = 0)
+    .def("search1", &streamCEOs::search1,
     py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
-    .def("hash_search", &streamCEOs::hash_search,
+    .def("build2", &streamCEOs::build2, py::arg("dataset"))
+    .def("update2", &streamCEOs::update2, py::arg("new_dataset"),py::arg("n_delPoints") = 0)
+    .def("search2", &streamCEOs::search2,
     py::arg("queries"), py::arg("n_neighbors"), py::arg("verbose") = false)
     //
     ;

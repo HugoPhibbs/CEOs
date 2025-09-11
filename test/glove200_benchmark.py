@@ -66,37 +66,39 @@ if __name__ == '__main__':
     # print("\nCEOs-hash")
     # probed_points = top_m # numDist = probed_points * probed_vectors
     # utils.ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
+    # utils.stream_ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
     #-------------------------------------------------------------------
     # coCEOs-Est (2 layers)
-    top_m = 1000
-    n_repeats = 2**6
-    probed_vectors = 80
-    n_cand = 30000
-
-    D = 2**8
-    iProbe = 8
-    verbose = True
-    seed = -1
-    centering = False
-
-    print("\ncoCEOs-Est2")
-    utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
+    # top_m = 1000
+    # n_repeats = 2**6
+    # probed_vectors = 80
+    # n_cand = 30000
+    #
+    # D = 2**8
+    # iProbe = 8
+    # verbose = True
+    # seed = -1
+    # centering = False
+    #
+    # print("\ncoCEOs-Est2")
+    # utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
 
     #-------------------------------------------------------------------
     top_m = 50
-    n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    n_repeats = 2**4 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
     D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
     probed_vectors = n_repeats * 5
-    iProbe = 4
+    iProbe = 2
     verbose = True
-    seed = -1 # -1 means random
-    centering = 1
+    seed = 42 # -1 means random
+    centering = 0
 
     print("\nCEOs-hash2")
     probed_points = top_m # numDist = probed_points * probed_vectors
     utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
+    #-------------------------------------------------------------------
 
 
 

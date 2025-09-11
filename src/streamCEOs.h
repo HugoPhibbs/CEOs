@@ -18,20 +18,17 @@ protected:
 
     int n_proj = 256;
     int n_rotate = 3;
-    int top_m = 100; // we make it public as query might retrieve a subset of points in the bucket
+    int top_m = 100;
+    int iProbe = 1;
 
     int n_repeats = 1;
     int seed = -1;
 
     deque<VectorXf> deque_X; // It is fast for remove and add at the end of queue
-    VectorXf vec_center; // When initialize the data structure with large n_points, we can apply centering trick
-
-    // coCEOs-Est and CEOs-Hash: (4 * top-points) x (n_proj * repeat)
-    // the first/second is index/projection value of close points, the third/forth is index/projection value of far points
-    MatrixXf matrix_P; // (n_proj * repeat) x n where the first D x n is for the first set of random rotation
+    vector<vector<IFPair>> vec2D_Pair_Buckets;
 
     int fhtDim;
-    boost::dynamic_bitset<> bitHD;
+    boost::dynamic_bitset<> bitHD1, bitHD2;
 
 public:
 
@@ -39,25 +36,22 @@ public:
 
     // Query param
     int n_probed_vectors = 10;
-    int n_probed_points = 10;
-    int n_cand = 10;
-    bool centering = false;
 
     // we need n_features to design fhtDim
     streamCEOs(int d){
 //        n_points = n; // we do not need n_points as we support add_remove
         n_features = d;
-        vec_center = VectorXf::Zero(d);
     }
 
-    void set_streamCEOsParam(int numProj, int repeats, int m, int threads, int s) {
+    void set_streamCEOsParam(int numProj, int repeats, int m, int i, int t, int s) {
 
         n_proj = numProj;
         n_repeats = repeats;
         top_m = m;
-        n_probed_vectors = top_m;
+        n_probed_vectors = 20;
+        iProbe = i;
 
-        set_threads(threads);
+        set_threads(t);
         seed = s;
 
         // setting fht dimension. Note n_proj must be 2^a, and > n_features
@@ -72,11 +66,10 @@ public:
     void clear() {
 
         deque_X.clear();
+        vec2D_Pair_Buckets.clear();
 
-        matrix_P.resize(0, 0);
-        vec_center.resize(0);
-
-        bitHD.clear();
+        bitHD1.clear();
+        bitHD2.clear();
     }
 
     void set_threads(int t)
@@ -87,10 +80,20 @@ public:
             n_threads = t;
     }
 
-    void build(const Ref<const RowMajorMatrixXf> &);
-    void update(const Ref<const RowMajorMatrixXf> &, int = 0);
-    tuple<RowMajorMatrixXi, RowMajorMatrixXf> estimate_search(const Ref<const RowMajorMatrixXf> &, int, bool=false);
-    tuple<RowMajorMatrixXi, RowMajorMatrixXf> hash_search(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    void build1(const Ref<const RowMajorMatrixXf> &);
+    void update1(const Ref<const RowMajorMatrixXf> &, int = 0);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search1(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+
+    void build2(const Ref<const RowMajorMatrixXf> &);
+    void update2(const Ref<const RowMajorMatrixXf> &, int = 0);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search2(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+
+    //================================================================
+    void build1_HighMem(const Ref<const RowMajorMatrixXf> &);
+    void update1_HighMem(const Ref<const RowMajorMatrixXf> &, int = 0);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_Est1_HighMem(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    tuple<RowMajorMatrixXi, RowMajorMatrixXf> search_Hash1_HighMem(const Ref<const RowMajorMatrixXf> &, int, bool=false);
+    //================================================================
 
     ~streamCEOs() { clear(); }
 

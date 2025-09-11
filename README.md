@@ -1,16 +1,22 @@
-## CEOs - A novel dimensionality reduction method for maximum inner product search
+## CEOs - A novel dimensionality reduction method with applications for ANNS
 
 CEOs is a novel dimensionality reduction method that leverages the behavior of concomintants of extreme order statistics.
 Different from the forklore random projection, CEOs uses a significantly larger number of random vectors `n_proj`.
 The projection values on a few closest/furthest vectors to the query are enough to estimate inner product between data points and the query.
-Building on the theory of CEOs, we propose coCEOs, a practical variant, that uses much smaller indexing space, provides better accuracy-speed tradeoffs, and supports streaming indexing update.
+Building on the theory of CEOs, we propose several algorithmic ANNS solvers, including
+* CEOs and coCEOs-Est for estimating `n` inner product values to answer ANNS.
+* CEOs-Hash is a locality-sensitive hashing scheme for ANNS (with inner product and cosine), that uses much smaller indexing space, achieves competitive accuracy-speed tradeoffs, and supports streaming indexing update.
 
-coCEOs uses `n_repeats * n_proj` number of random vectors.
+There are two versions of CEOs-Hash, including:
+* CEOs-Hash1 uses `n_proj` number of random vectors, corresponding to `2 * n_proj` buckets
+* CEOs-Hash2 uses a tensor strick with `2 * n_proj` number of random vectors, corresponding to `4 * n_proj * n_proj` buckets.
+
 Each group of `n_proj` random vectors is simulated by the [FFHT](https://github.com/FALCONN-LIB/FFHT) to speed up the projection time.
-CEOs and coCEOs also support multi-threading for both indexing and querying by adding only ```#pragma omp parallel for```.
+CEOs variants support multi-threading for both indexing and querying by adding only ```#pragma omp parallel for```.
+streamCEOs supports delete/insert new points into the index in the streaming fashion.
 
 We use [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) that supports SIMD dot product computation.
-We use [TSL](https://github.com/Tessil/robin-map) for the hash map and hash set using linear robin hood hashing.
+We use [TSL](https://github.com/Tessil/robin-map) for the hash map and hash set using linear robin hood hashing for coCEOs-Est.
 ## Prerequisites
 
 * A compiler with C++17 support
@@ -42,22 +48,29 @@ Data and query must be n x d matrices.
 ```
 import CEOs
 
-# CEOs
-D = 2**10
-n_repeats = 2**1
-top-m = 100 # not used in CEOs-Est
+# Static CEOs-Hash2
+top_m = 50
+n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+probed_vectors = n_repeats * 5
+iProbe = 4
+verbose = True
+seed = -1 # -1 means random
+centering = 1 # default 0
 
 n, d = np.shape(X)
 index = CEOs.CEOs(n, d)
-index.setIndexParam(D, n_repeats, top_m, n_threads, seed)
-index.build(X)  # X must have d x n
+index.setIndexParam(D, n_repeats, top_m, iProbe, n_threads, seed)
+# index.centering = centering
+index.build_CEOs_Hash2(X)  # X must have d x n
+print('CEOs-Hash2 index time (s): {}'.format(timeit.default_timer() - t1))
 
+index.n_probed_vectors = n_repeats * 5        
+t1 = timeit.default_timer()
+approx_kNN, approx_Dist = index.search_CEOs_Hash2(Q, k, verbose)  # search
+print("\tCEOs-Hash2 query time (s): {}".format(timeit.default_timer() - t1))
+print("\tCEOs-Hash2 accuracy: ", getAcc(exact_kNN, approx_kNN))
 
-# query param
-index.n_probed_vectors = 20
-index.n_cand = 500
-
-approx_kNN, approx_Dist = index.search(Q, k, verbose)
 ```
 
 See details in test/netflix_benchmark.py

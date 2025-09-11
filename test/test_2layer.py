@@ -69,8 +69,8 @@ if __name__ == '__main__':
     # utils.coceos_est2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, n_cand, n_repeats, n_threads=n_threads, seed=seed, centering=centering)
 
     #-------------------------------------------------------------------
-    # top_m = 500
-    # n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # top_m = 50
+    # n_repeats = 2**6 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
     # D = 2**10 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
     # probed_vectors = 160
     # iProbe = 0 # not used in 1 layer case
@@ -83,47 +83,43 @@ if __name__ == '__main__':
     # utils.ceos_hash1(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
 
     #-------------------------------------------------------------------
-    top_m = 50
+    # top_m = 50
+    # n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # probed_vectors = n_repeats * 5
+    # iProbe = 4
+    # verbose = True
+    # seed = -1 # -1 means random
+    # centering = 1
+    #
+    # print("\nCEOs-hash2")
+    # probed_points = top_m # numDist = probed_points * probed_vectors
+    # utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
+
+    #-------------------------------------------------------------------
+    # top_m = 50
+    # n_repeats = 2**6 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # D = 2**10 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
+    # probed_vectors = 160
+    # iProbe = 0 # not used in 1 layer case
+    # verbose = True
+    # seed = -1 # -1 means random
+    # centering = False
+    #
+    # print("\nStreamCEOs-hash1")
+    # utils.stream_ceos_stream_hash1(X, Q, k, D, top_m, iProbe, probed_vectors, n_repeats, n_threads, seed=seed)
+
+    #-------------------------------------------------------------------
+    top_m = 20
     n_repeats = 2**8 # increase n_repeats will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
     D = 2**8 # increase D will increase indexing time and space, but increase the accuracy given fixed top-m and probed_vectors
-    probed_vectors = n_repeats * 5
-    iProbe = 4
+    probed_vectors = 480
+    iProbe = 8 # not used in 1 layer case
     verbose = True
     seed = -1 # -1 means random
-    centering = 1
+    centering = False
 
-    print("\nCEOs-hash2")
-    probed_points = top_m # numDist = probed_points * probed_vectors
-    utils.ceos_hash2(exact_kNN, X, Q, k, D, top_m, iProbe, probed_vectors, probed_points, n_repeats, n_threads,centering=centering)
-
-    #-------------------------------------------------------------------
-    # utils.streamCEOs_test(exact_kNN, X, Q, k, top_m, probed_vectors, n_cand, n_repeats, n_threads)
-    # print("\nStreamCEOs-est")
-    #
-    # top_m = 500
-    # probed_vectors = 40
-    # n_cand = 100
-    # n_repeats = 2**1
-    # D = 2**9
-    # utils.streamCEOs_est(X, Q, k, top_m, probed_vectors, n_cand, n_repeats, n_threads)
-    #
-    # print("\nStreamCEOs-hash")
-    # top_m = 50
-    # probed_vectors = 40
-    # n_repeats = 2**1
-    # D = 2**9
-    # utils.streamCEOs_hash(X, Q, k, top_m, probed_vectors, n_repeats, n_threads)
+    print("\nStreamCEOs-hash2")
+    utils.stream_ceos_stream_hash2(X, Q, k, D, top_m, iProbe, probed_vectors, n_repeats, n_threads, seed=seed)
 
     #-------------------------------------------------------------------
-    # print("\nFaiss-IVF")
-    # utils.faissIVF(exact_kNN, X, Q, k, n_list=1000, n_probe=20, n_threads=n_threads, dist='ip')
-
-    # #-------------------------------------------------------------------
-    # print("\nHnswlib")
-    # utils.hnswMIPS(exact_kNN, X, Q, k, efSearch=100, n_threads=n_threads)
-
-
-
-
-
-

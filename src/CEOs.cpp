@@ -41,7 +41,7 @@ void CEOs::build_CEOs(const Ref<const RowMajorMatrixXf> & matX)
 
     CEOs::matrix_X = matX; // No centering
     auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - copy_start);
-    cout << "Copying data time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "Copying data time (s): " << (float)duration.count() / 1000 << endl;
 
     // Note that if fhtDim > n_proj, then we need to retrieve the first n_proj columns of the projections
     // This will save memory footprint if fhtDim is much larger than n_proj
@@ -93,7 +93,7 @@ void CEOs::build_CEOs(const Ref<const RowMajorMatrixXf> & matX)
     cout << "Size of data set in GB: " << dSize << endl;
 
     duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Index construction time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "CEOs construction time (s): " << (float)duration.count() / 1000 << endl;
 }
 
 /**
@@ -305,11 +305,11 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs(const Ref<const RowM
     if (verbose)
     {
         cout << "Test " << endl;
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Extracting candidates time: " << candTime << " ms" << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
+        cout << "Projecting and extracting top-vectors time: (ms) " << projTime << endl;
+        cout << "Estimating time (ms): " << estTime << endl;
+        cout << "Extracting candidates time (ms): " << candTime << endl;
+        cout << "Computing distance time (ms): " << distTime << endl;
+        cout << "Querying time  (ms): " << (float)durTime.count() << endl;
 
         // double projTime_sum =
         //     std::accumulate(projTime_thr.begin(), projTime_thr.end(), 0.0);
@@ -387,10 +387,8 @@ void CEOs::build_coCEOs_Est1(const Ref<const RowMajorMatrixXf> &matX)
 
 
     auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Copying data time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "Copying data time (s): " << (float)duration.count() / 1000 << endl;
 
-    // CEOs::matrix_P has (4 * top-m) x (proj * repeats) since query phase will access each column corresponding each random vector
-    // We need 2 * top-points position for (index, value)
     int numBucketsPerRepeat = 2 * CEOs::n_proj;
     CEOs::vec2D_Pair_Buckets = vector<vector<IFPair>> (numBucketsPerRepeat * CEOs::n_repeats);
 
@@ -508,9 +506,9 @@ void CEOs::build_coCEOs_Est1(const Ref<const RowMajorMatrixXf> &matX)
     }
 
     duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Projecting time: " << projTime << " ms" << endl;
-    cout << "Extracting top-m points time: " << extractTopPointsTime << " ms" << endl;
-    cout << "Constructing time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "Projecting time (s): " << projTime / 1000 << endl;
+    cout << "Extracting top-m points time (s): " << extractTopPointsTime / 1000 << endl;
+    cout << "coCEos-Est1 constructing time (s): " << (float)duration.count() / 1000 << endl;
 }
 
 /**
@@ -698,11 +696,11 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est1(const Ref<con
 
     if (verbose)
     {
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Extracting candidates time: " << candTime << " ms" << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
+        cout << "Projecting and extracting top-vectors time (ms): " << projTime << endl;
+        cout << "Estimating time (ms): " << estTime << endl;
+        cout << "Extracting candidates time (ms): " << candTime << endl;
+        cout << "Computing distance time (ms): " << distTime << endl;
+        cout << "Querying time: " << (float)durTime.count() << endl;
 
         // string sFileName = "coCEOs_Est_" + int2str(n_neighbors) +
         //                    "_numProj_" + int2str(CEOs::n_proj) +
@@ -733,9 +731,9 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est1(const Ref<con
  * - For each point Xi, we execute n_repeats times of FHT, and for each random vector, we insert the (index, projection value) pair into the corresponding bucket if
  *  the bucket has less than m pairs, or the projection value is larger than the minimum value in the bucket
  *
- * - For each repeat, we maintain 2 * D priority queues of size m (vectorMinQue_TopM) to store the top-m pairs for each bucket since there are 2D random vectors
+ * - For each repeat, we maintain local 2 * D priority queues of size m (vectorMinQue_TopM) to store the top-m pairs for each bucket since there are 2D random vectors
  * - We use locks to avoid multiple threads writing to the same bucket at the same time
- * - After processing all points per each repeat, we dequeue and store the top-m pointIdx on vec2D_Buckets
+ * - After processing all points per each repeat, we update global index by dequeuing and storing the top-m pointIdx on vec2D_Buckets
  *
  * - The process is nearly the same as build_coCEOs_Est1 except that we only store pointIdx instead of (pointIdx, projection value) pair
  *
@@ -763,9 +761,8 @@ void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
     CEOs::vecCenter = CEOs::matrix_X.colwise().mean();
 
     auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Copying data time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "Copying data time (s): " << (float)duration.count() / 1000 << endl;
 
-    // CEOs::matrix_P has (4 * top-m) x (proj * repeats) since query phase will access each column corresponding each random vector
     // We need 2 * top-points position for (index, value)
     int numBucketsPerRepeat = 2 * CEOs::n_proj;
     CEOs::vec2D_Buckets = vector<vector<int>> (numBucketsPerRepeat * CEOs::n_repeats);
@@ -790,6 +787,8 @@ void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
         omp_init_lock(&locks[i]);
     }
 
+    // For each repeat, we compute the local index of (2D) buckets (by parallel on points).
+    // After that, we update the global index of (2D) * n_repeats buckets (by parallel on local buckets)
     for (int repeat = 0; repeat < CEOs::n_repeats; ++repeat) {
         int bucketBase = repeat * numBucketsPerRepeat;
         vector<priority_queue< IFPair, vector<IFPair>, greater<> >> vectorMinQue_TopM(numBucketsPerRepeat);
@@ -807,12 +806,12 @@ void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
 
             // Random projection and insert into a priority queue for each random vectors
             VectorXf rotatedX = tempX;
-            int baseIdx = CEOs::fhtDim * CEOs::n_rotate * repeat;
+            int rotateBase = CEOs::fhtDim * CEOs::n_rotate * repeat;
 
             for (int rotate = 0; rotate < CEOs::n_rotate; ++rotate)
             {
                 for (int d = 0; d < CEOs::fhtDim; ++d) {
-                    rotatedX(d) *= (2 * static_cast<float>(CEOs::bitHD1[baseIdx + rotate * CEOs::fhtDim + d]) - 1);
+                    rotatedX(d) *= (2 * static_cast<float>(CEOs::bitHD1[rotateBase + rotate * CEOs::fhtDim + d]) - 1);
                 }
 
                 fht_float(rotatedX.data(), log2_FHT);
@@ -847,7 +846,7 @@ void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
 
         } // End for each point
 
-        // For each bucket, we deque the top-m points into vec2D_Pair_Buckets
+        // Update global data structure
 #pragma omp parallel for reduction(+: extractTopPointsTime)
         for (size_t b = 0; b < vectorMinQue_TopM.size(); ++b)
         {
@@ -875,7 +874,7 @@ void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
     cout << "Size of data set in GB: " << dSize << endl;
 
     for (size_t b = 0; b < CEOs::vec2D_Buckets.size(); ++b)
-        dSize += 1.0 * CEOs::vec2D_Buckets[b].size() * sizeof(IFPair) / (1 << 30);
+        dSize += 1.0 * CEOs::vec2D_Buckets[b].size() * sizeof(int) / (1 << 30);
 
     cout << "Size of coCEOs-Est index (including data) in GB: " << dSize << endl;
 
@@ -885,9 +884,9 @@ void CEOs::build_CEOs_Hash1(const Ref<const RowMajorMatrixXf> &matX)
     }
 
     duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Projecting time: " << projTime << " ms" << endl;
-    cout << "Extracting top-m points time: " << extractTopPointsTime << " ms" << endl;
-    cout << "Constructing time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "Projecting time (s): " << projTime / 1000 << endl;
+    cout << "Extracting top-m points time (s): " << extractTopPointsTime / 1000 << endl;
+    cout << "CEOs-Hash1 constructing time (s): " << (float)duration.count() / 1000 << endl;
 }
 
 /**
@@ -923,7 +922,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash1(const Ref<cons
     {
         cout << "n_probedVectors: " << CEOs::n_probed_vectors << endl;
         cout << "n_probedPoints: " << CEOs::n_probed_points << endl;
-        cout << "n_cand: " << CEOs::n_cand << endl;
+        cout << "n_cand: " << CEOs::n_probed_vectors *  CEOs::n_probed_points << endl;
         cout << "n_threads: " << CEOs::n_threads << endl;
 
         cout << "n_queries: " << n_queries << endl;
@@ -931,7 +930,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash1(const Ref<cons
 
     auto startQueryTime = chrono::high_resolution_clock::now();
 
-    float projTime = 0.0, estTime = 0.0, distTime = 0.0;
+    float projTime = 0.0, distTime = 0.0;
 
     RowMajorMatrixXi matTopK = RowMajorMatrixXi::Zero(n_queries, n_neighbors);
     RowMajorMatrixXf matTopDist = RowMajorMatrixXf::Zero(n_queries, n_neighbors);
@@ -941,7 +940,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash1(const Ref<cons
     // omp_set_dynamic(0);     // Explicitly disable dynamic teams
     omp_set_num_threads(CEOs::n_threads);
 
-#pragma omp parallel for reduction(+:projTime, estTime, distTime)
+#pragma omp parallel for reduction(+:projTime, distTime)
     for (int q = 0; q < n_queries; ++q)
     {
         auto startTime = chrono::high_resolution_clock::now();
@@ -1039,10 +1038,9 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash1(const Ref<cons
 
     if (verbose)
     {
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
+        cout << "Projecting and extracting top-vectors time (ms): " << projTime << endl;
+        cout << "Computing distance time (ms): " << distTime << endl;
+        cout << "Querying time (ms): " << (float)durTime.count() << endl;
 
         // string sFileName = "coCEOs_Est_" + int2str(n_neighbors) +
         //                    "_numProj_" + int2str(CEOs::n_proj) +
@@ -1109,7 +1107,7 @@ void CEOs::build_coCEOs_Est2(const Ref<const RowMajorMatrixXf> &matX)
     CEOs::vecCenter = CEOs::matrix_X.colwise().mean();
 
     auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Copying data time (in seconds): " << (float)duration.count() / 1000 << endl;
+    cout << "Copying data time (s): " << (float)duration.count() / 1000 << endl;
 
     /** Global parameter **/
     int numBucketsPerRepeat = 4 * CEOs::n_proj * CEOs::n_proj;
@@ -1366,6 +1364,8 @@ void CEOs::build_coCEOs_Est2(const Ref<const RowMajorMatrixXf> &matX)
     // FalconnLite::matrix_X.resize(0, 0);
     // FalconnLite::matrix_R.resize(0, 0);
 
+    duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
+    cout << "coCEOs-Est2 construction time (s): " << (float)duration.count() / 1000 << endl;
 }
 
 /**
@@ -1678,11 +1678,11 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est2(const Ref<con
         cout << "Avg number of distance per point: " << avgDist / n_queries << endl;
         cout << "Avg number of probes per point: " << avgProbes / n_queries << endl;
 
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Extracting candidates time: " << candTime << " ms" << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
+        cout << "Projecting and extracting top-vectors time (ms): " << projTime << endl;
+        cout << "Estimating time (ms): " << estTime << endl;
+        cout << "Extracting candidates time (ms): " << candTime << endl;
+        cout << "Computing distance time (ms): " << distTime << endl;
+        cout << "Querying time (ms): " << (float)durTime.count() << endl;
 
         // string sFileName = "coCEOs_Est_" + int2str(n_neighbors) +
         //                    "_numProj_" + int2str(CEOs::n_proj) +
@@ -1713,14 +1713,14 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est2(const Ref<con
  * - For each point Xi, we execute n_repeats times of FHT twice for R and S, and for each set, extracting top-iProbe closest random vectors.
  * - Then we insert Xi into these top-iProbe^2 buckets, if the bucket has less than m pairs, or the projection value is larger than the minimum value in the bucket
  *
- * - For each repeat, we maintain 4D^2 priority queues of size m (vectorMinQue_TopM) to store the top-m pairs for each bucket since there are 4D^2 pairs of random vectors
+ * - For each repeat, we maintain LOCAL 4D^2 priority queues of size m (vectorMinQue_TopM) to store the top-m pairs for each bucket since there are 4D^2 pairs of random vectors
  * - We consider [0, D) for positive projection values (closest) and [D, 2D) for negative projections values (furthest) for each set
  *
  * - Note: Falconn++ only insert a point into iProbe buckets, but we insert into iProbe^2 buckets.
  * - We can support this feature in future (by using an additional minQueue or scale iProbe to sqrt{iProbe})
  *
  * - We use locks to avoid multiple threads writing to the same bucket at the same time
- * - After processing all points per each repeat, we dequeue and store the top-m (pointIdx, projection value) pairs on vec2D_Pair_Buckets
+ * - After processing all points per each repeat, we update GLOBAL index by dequeuing and storing the top-m (pointIdx, projection value) pairs on vec2D_Pair_Buckets
  *
  * - The process is nearly the same as build_coCEOs_Est1 except that we have two times of FHT and projection for each point
  *
@@ -1773,6 +1773,8 @@ void CEOs::build_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &matX)
         omp_init_lock(&locks[i]);
     }
 
+    // For each repeat, we compute the local index of (4D^2) buckets (by parallel on points).
+    // After that, we update the global index of (4D^2) * n_repeats buckets (by parallel on local buckets)
     for (int repeat = 0; repeat < n_repeats; ++repeat)
     {
         int bucketBase = repeat * numBucketsPerRepeat;
@@ -2004,6 +2006,8 @@ void CEOs::build_CEOs_Hash2(const Ref<const RowMajorMatrixXf> &matX)
     // FalconnLite::matrix_X.resize(0, 0);
     // FalconnLite::matrix_R.resize(0, 0);
 
+    duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
+    cout << "CEos-Hash2 constructing time (s): " << (float)duration.count() / 1000 << endl;
 }
 
 /**
@@ -2046,7 +2050,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
 
     auto startQueryTime = chrono::high_resolution_clock::now();
 
-    float projTime = 0.0, estTime = 0.0, distTime = 0.0, candTime = 0.0;
+    float projTime = 0.0, distTime = 0.0;
 
     RowMajorMatrixXi matTopK = RowMajorMatrixXi::Zero(n_queries, n_neighbors);
     RowMajorMatrixXf matTopDist = RowMajorMatrixXf::Zero(n_queries, n_neighbors);
@@ -2063,7 +2067,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
     int top_s = ceil(sqrt(1.0 * CEOs::n_probed_vectors / n_repeats));
     float avgDist = 0.0, avgProbes = 0.0;
 
-#pragma omp parallel for reduction(+:projTime, estTime, candTime, distTime, avgDist, avgProbes)
+#pragma omp parallel for reduction(+:projTime, distTime, avgDist, avgProbes)
     for (int q = 0; q < n_queries; ++q)
     {
         auto startTime = chrono::high_resolution_clock::now();
@@ -2240,7 +2244,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
             int bucketIdx = minQueHash.top().m_iIndex;
             minQueHash.pop();
 
-            avgProbes += (int)CEOs::vec2D_Buckets[bucketIdx].size();
+            avgProbes += (float)CEOs::vec2D_Buckets[bucketIdx].size();
 
             // Sample one random point from the bucket Ri
             for (const int pointIdx: CEOs::vec2D_Buckets[bucketIdx]) {
@@ -2260,7 +2264,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
             }
         } // End for each probed bucket
 
-        avgDist += (int)bitsetHist.count();
+        avgDist += (float)bitsetHist.count();
 
         // There is the case that we get all 0 index if we do not have enough Top-K
         for (int k = (int)minQueTopK.size() - 1; k >= 0; --k)
@@ -2281,820 +2285,11 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
         cout << "Avg number of distance per point: " << avgDist / n_queries << endl;
         cout << "Avg number of probes per point: " << avgProbes / n_queries << endl;
 
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Extracting candidates time: " << candTime << " ms" << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
+        cout << "Projecting and extracting top-vectors time (ms): " << projTime << endl;
+        cout << "Computing distance time (ms): " << distTime << endl;
+        cout << "Querying time (ms): " << (float)durTime.count() << endl;
 
         // string sFileName = "coCEOs_Est_" + int2str(n_neighbors) +
-        //                    "_numProj_" + int2str(CEOs::n_proj) +
-        //                    "_numRepeat_" + int2str(CEOs::n_repeats) +
-        //                    "_topProj_" + int2str(CEOs::n_probed_vectors) +
-        //                    "_topPoints_" + int2str(CEOs::n_probed_points) +
-        //                    "_cand_" + int2str(n_cand) + ".txt";
-        //
-        //
-        // outputFile(matTopK, sFileName);
-    }
-
-    return make_tuple(matTopK, matTopDist);
-}
-
-
-
-
-
-
-
-
-
-//======================================================================================================================
-
-/**
- * Build index of coCEOs for estimating inner product
- *
- * @param matX: Note that CEOs::matrix_X has not been initialized, so we need to send param matX
- * We can avoid duplicated memory by loading data directly from the filename if dataset is big.
- * This implementation computes matrix_P first, then reduce its size.
- * Though using more temporary memory but faster parallel, and perhaps cache-friendly
- *
- * Caveat: https://pybind11.readthedocs.io/en/stable/advanced/cast/eigen.html#storage-orders
- * While this approach allows fully optimized vectorized calculations in Eigen,
- * it cannot be used with array slices (i.e. when sending matX as an array slices from numpy)
- */
-void CEOs::build_coCEOs_Est_HighMem(const Ref<const RowMajorMatrixXf> &matX)
-{
-    cout << "Building coCEOs-Estimate index..." << endl;
-
-    cout << "n_points: " << CEOs::n_points << endl;
-    cout << "n_features: " << CEOs::n_features << endl;
-    cout << "n_repeats: " << CEOs::n_repeats << endl;
-    cout << "n_proj: " << CEOs::n_proj << endl;
-    cout << "top_m: " << CEOs::top_m << endl;
-    cout << "fhtDim: " << CEOs::fhtDim << endl;
-
-    auto start = chrono::high_resolution_clock::now();
-
-    omp_set_num_threads(CEOs::n_threads);
-
-    CEOs::matrix_X = matX;
-
-    // Compute the data center
-    CEOs::vecCenter = CEOs::matrix_X.colwise().mean();
-
-
-    auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Copying data time (in seconds): " << (float)duration.count() / 1000 << endl;
-
-    // CEOs::matrix_P has (4 * top-m) x (proj * repeats) since query phase will access each column corresponding each random vector
-    // We need 2 * top-points position for (index, value)
-    CEOs::matrix_P = MatrixXf::Zero(4 * CEOs::top_m, CEOs::n_proj * CEOs::n_repeats);
-
-    // mat_pX is identical to CEOs estimation, has (n_points) x (proj * repeats)
-    MatrixXf mat_pX = MatrixXf::Zero(CEOs::n_points, CEOs::n_proj * CEOs::n_repeats);
-    bitHD3Generator(CEOs::fhtDim * CEOs::n_rotate * CEOs::n_repeats, CEOs::seed, CEOs::bitHD1);
-
-    int log2_FHT = log2(CEOs::fhtDim);
-
-    float extractTopPointsTime = 0.0, projTime = 0.0;
-
-    // First, we compute the projection of each point, store it into mat_pX
-#pragma omp parallel for reduction(+:projTime)
-    for (int n = 0; n < CEOs::n_points; ++n) {
-
-        auto startTime = chrono::high_resolution_clock::now();
-
-        VectorXf tempX = VectorXf::Zero(CEOs::fhtDim);
-
-        if (CEOs::centering)
-            tempX.segment(0, CEOs::n_features) = CEOs::matrix_X.row(n) - CEOs::vecCenter;
-        else
-            tempX.segment(0, CEOs::n_features) = CEOs::matrix_X.row(n);
-
-        // For each repeat
-        for (int repeat = 0; repeat < CEOs::n_repeats; ++repeat) {
-
-            VectorXf rotatedX = tempX;
-            int baseIdx = CEOs::fhtDim * CEOs::n_rotate * repeat;
-
-            for (int rotate = 0; rotate < CEOs::n_rotate; ++rotate)
-            {
-                for (int d = 0; d < CEOs::fhtDim; ++d) {
-                    rotatedX(d) *= (2 * static_cast<float>(CEOs::bitHD1[baseIdx + rotate * CEOs::fhtDim + d]) - 1);
-                }
-
-                fht_float(rotatedX.data(), log2_FHT);
-            }
-
-            // Note for segment(i, size) where i is starting index, size is segment size
-            mat_pX.row(n).segment(CEOs::n_proj * repeat + 0, CEOs::n_proj) = rotatedX.segment(0, CEOs::n_proj); // only get up to #n_proj
-        }
-
-        projTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-    }
-
-
-    // Second, we extract indexBucketSize points closest/furthest to each random vector (i.e. for each column)
-    // Since number of repeats is small, we parallel on number of projection vectors (i.e. second loop)
-#pragma omp parallel for reduction(+: extractTopPointsTime)
-    for (int iCol = 0; iCol < CEOs::n_repeats * CEOs::n_proj; ++iCol)
-    {
-        auto startTime = chrono::high_resolution_clock::now();
-
-        // Note that minQueFar has to deal with minus
-        // Since indexBuckeSize << n, using priority queue is faster than make_heap and pop_heap
-        // Also, we will deque to get top-points closest/furthest to random vector, so the queues will be empty in the end
-        priority_queue<IFPair, vector<IFPair>, greater<> > minQueClose, minQueFar; // for closest
-
-        VectorXf projectedVec = mat_pX.col(iCol);
-
-        for (int n = 0; n < CEOs::n_points; ++n){
-            float fProjectedValue = projectedVec(n);
-
-            // Closest points
-            if ((int)minQueClose.size() < CEOs::top_m)
-                minQueClose.emplace(n, fProjectedValue);
-            else if (fProjectedValue > minQueClose.top().m_fValue)
-            {
-                minQueClose.pop();
-                minQueClose.emplace(n, fProjectedValue);
-            }
-
-            // Furthest points: need to deal with -
-            if ((int)minQueFar.size() < CEOs::top_m)
-                minQueFar.emplace(n, -fProjectedValue);
-            else
-            {
-                if (-fProjectedValue > minQueFar.top().m_fValue)
-                {
-                    minQueFar.pop();
-                    minQueFar.emplace(n, -fProjectedValue);
-                }
-            }
-        }
-
-        // Now deque and store into matrix_P:
-        // the first top-point is idx, the second top-points is value for closest
-        // the third top-point is idx, the fourth top-points is value for furthest
-        for (int m = CEOs::top_m - 1; m >= 0; --m)
-        {
-            // Close: 1st is index, 2nd is projected value
-            CEOs::matrix_P(2*m, iCol) = minQueClose.top().m_iIndex;
-            CEOs::matrix_P(2*m + 1, iCol) = minQueClose.top().m_fValue;
-            minQueClose.pop();
-
-            // Far: 3rd is index, 4th is projected value
-            CEOs::matrix_P(2*m + 2 * CEOs::top_m, iCol) = minQueFar.top().m_iIndex;
-            CEOs::matrix_P(2*m + 1 + 2 * CEOs::top_m, iCol) = minQueFar.top().m_fValue; // Store -projectedValue
-            minQueFar.pop();
-        }
-
-        extractTopPointsTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-    }
-
-    double dSize = 1.0 * (CEOs::matrix_P.rows() * CEOs::matrix_P.cols() + CEOs::matrix_X.rows() * CEOs::matrix_X.cols()) * sizeof(float) / (1 << 30);
-    cout << "Size of coCEOs-Est index in GB: " << dSize << endl;
-
-    duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start);
-    cout << "Projecting time: " << projTime << " ms" << endl;
-    cout << "Extracting top-m points time: " << extractTopPointsTime << " ms" << endl;
-    cout << "Constructing time (in seconds): " << (float)duration.count() / 1000 << endl;
-}
-
-/**
- *
- * @param matQ
- * @param n_neighbors
- * @param verbose
- * @return
- */
-tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_coCEOs_Est_HighMem(const Ref<const RowMajorMatrixXf> & matQ, int n_neighbors, bool verbose)
-{
-    if (CEOs::n_probed_points > CEOs::top_m)
-    {
-        cerr << "Error: Number of probed points must be smaller than number of indexed top-m points !" << endl;
-        exit(1);
-    }
-    if (CEOs::n_probed_vectors > CEOs::n_proj * CEOs::n_repeats)
-    {
-        cerr << "Error: Number of probed vectors must be smaller than n_proj * n_repeats !" << endl;
-        exit(1);
-    }
-
-    int n_queries = matQ.rows();
-    if (verbose)
-    {
-        cout << "n_probed_vectors: " << CEOs::n_probed_vectors << endl;
-        cout << "n_probed_points: " << CEOs::n_probed_points << endl;
-        cout << "n_cand: " << CEOs::n_cand << endl;
-        cout << "n_threads: " << CEOs::n_threads << endl;
-
-        cout << "n_queries: " << n_queries << endl;
-    }
-
-    auto startQueryTime = chrono::high_resolution_clock::now();
-
-    float projTime = 0.0, estTime = 0.0, distTime = 0.0, candTime = 0.0;
-
-    RowMajorMatrixXi matTopK = RowMajorMatrixXi::Zero(n_queries, n_neighbors);
-    RowMajorMatrixXf matTopDist = RowMajorMatrixXf::Zero(n_queries, n_neighbors);
-
-    int log2_FHT = log2(CEOs::fhtDim);
-
-    // omp_set_dynamic(0);     // Explicitly disable dynamic teams
-    omp_set_num_threads(CEOs::n_threads);
-
-#pragma omp parallel for reduction(+:projTime, estTime, candTime, distTime)
-    for (int q = 0; q < n_queries; ++q)
-    {
-        auto startTime = chrono::high_resolution_clock::now();
-
-        // Get hash value of all hash table first
-        VectorXf vecQuery = matQ.row(q);
-        VectorXf vecProject = VectorXf (CEOs::n_proj * CEOs::n_repeats);
-
-        // For each repeat
-        for (int repeat = 0; repeat < CEOs::n_repeats; ++repeat)
-        {
-            int baseIdx = CEOs::fhtDim * CEOs::n_rotate * repeat;
-            VectorXf rotatedQ = VectorXf::Zero(CEOs::fhtDim);
-
-            rotatedQ.segment(0, CEOs::n_features) = vecQuery;
-            // Note: be careful on centering query since it completely changes to X-c and q-c
-            // if (CEOs::centering)
-            //     rotatedQ.segment(0, CEOs::n_features) = vecQuery - CEOs::vecCenter;
-
-            for (int rotate = 0; rotate < CEOs::n_rotate; ++rotate)
-            {
-                for (int d = 0; d < CEOs::fhtDim; ++d) {
-                    rotatedQ(d) *= (2 * static_cast<float>(CEOs::bitHD1[baseIdx + rotate * CEOs::fhtDim + d]) - 1);
-                }
-                fht_float(rotatedQ.data(), log2_FHT);
-            }
-
-            // Note for segment(i, size) where i is starting index, size is segment size
-            vecProject.segment(CEOs::n_proj * repeat + 0, CEOs::n_proj) = rotatedQ.segment(0, CEOs::n_proj); // only get up to #n_proj
-
-        }
-
-        // Now look for the top-k (i.e. n_probedBucket) closest/furtheest random vector to the query
-        // The minQue will be empty after extracting top-k closest/furthest random vector to the query
-        priority_queue< IFPair, vector<IFPair>, greater<> > minQue;
-
-        /**
-         * matrix_P contains the projection values, of size n x (e * n_proj)
-         * For query, we apply a simple trick to restore the furthest/closest vector
-         * We increase index by 1 to get rid of the case of 0, and store a sign to differentiate the closest/furthest
-         * Remember to convert this value back to the corresponding index of matrix_P
-         * This fix is only for the rare case where r_0 at exp = 0 has been selected, which happen with very tiny probability
-         */
-        for (int d = 0; d < CEOs::n_repeats * CEOs::n_proj; ++d)
-        {
-            float fAbsProjValue = vecProject(d);
-
-            // Must increase by 1 after getting the value
-            int iCol = d + 1; // Hack: We increase by 1 since the index start from 0 and cannot have +/-
-
-            if (fAbsProjValue < 0)
-            {
-                fAbsProjValue = -fAbsProjValue; // get abs
-                iCol = -iCol; // use minus to indicate furthest vector
-            }
-
-            if ((int)minQue.size() < CEOs::n_probed_vectors)
-                minQue.emplace(iCol, fAbsProjValue);
-
-            // queue is full
-            else if (fAbsProjValue > minQue.top().m_fValue)
-            {
-                minQue.pop(); // pop max, and push min hash distance
-                minQue.emplace(iCol, fAbsProjValue);
-            }
-        }
-
-        projTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-        // Get top-r position out of n_proj * n_repeats and compute estimates
-        startTime = chrono::high_resolution_clock::now();
-
-        // If we want to estimate distance, then using vecEst.
-        // Otherwise, using unordered_map
-//        VectorXf vecEst = VectorXf::Zero(CEOs::n_points);
-        tsl::robin_map<int, float> mapEst;
-//        tsl::robin_map<int, pair<int, float> > mapEst;
-        mapEst.reserve(CEOs::n_probed_vectors * CEOs::n_probed_points);
-
-        for (int i = 0; i < CEOs::n_probed_vectors; ++i)
-        {
-            IFPair ifPair = minQue.top();
-            minQue.pop();
-
-            // Negative, means furthest away
-            if (ifPair.m_iIndex < 0)
-            {
-                int iCol = -ifPair.m_iIndex - 1; // decrease by one due to the trick of increase by 1 and use the sign for closest/furthest
-                for (int m = 0; m < CEOs::n_probed_points; ++m) // only consider up to probed_points
-                {
-                    int iPointIdx = int(CEOs::matrix_P(2*m + 2 * CEOs::top_m, iCol));
-                    float fValue = CEOs::matrix_P(2*m + 1 + 2 * CEOs::top_m, iCol); // we store -projectedValue
-
-                    if (mapEst.find(iPointIdx) == mapEst.end())
-                        mapEst[iPointIdx] = fValue;
-//                        mapEst[iPointIdx] = make_pair(1, fValue);
-                    else
-                    {
-                        mapEst[iPointIdx] += fValue;
-//                        mapEst[iPointIdx] = make_pair(mapEst[iPointIdx].first + 1, mapEst[iPointIdx].second + fValue);
-//                        mapEst[iPointIdx].first++;
-//                        mapEst[iPointIdx].second += fValue;
-                    }
-
-                }
-            }
-            else // closest
-            {
-                int iCol = ifPair.m_iIndex - 1; // decrease by one due to the trick of increase by 1 and use the sign for closest/furthest
-                for (int m = 0; m < CEOs::n_probed_points; ++m) // only consider up to probed_points
-                {
-                    int iPointIdx = int(CEOs::matrix_P(2*m, iCol));
-                    float fValue = CEOs::matrix_P(2*m + 1, iCol);
-
-                    if (mapEst.find(iPointIdx) == mapEst.end())
-                        mapEst[iPointIdx] = fValue;
-//                        mapEst[iPointIdx] = make_pair(1, fValue);
-                    else
-                    {
-                        mapEst[iPointIdx] += fValue;
-//                        mapEst[iPointIdx] = make_pair(mapEst[iPointIdx].first + 1, mapEst[iPointIdx].second + fValue);
-//                        mapEst[iPointIdx].first++;
-//                        mapEst[iPointIdx].second += fValue;
-                    }
-
-                }
-            }
-        }
-
-        estTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-        // If the cost of estTime and exact candidate is large with n = 10^9, then consider google dense map
-        assert(minQue.size() == 0);
-        startTime = chrono::high_resolution_clock::now();
-
-        // Only for probedPoints and probedBucket inputs
-        for (auto& it: mapEst)
-        {
-            float avgEst = it.second;
-//            float avgEst = it.second.second / it.second.first;
-            if ((int)minQue.size() < CEOs::n_cand)
-                minQue.emplace(it.first, avgEst); // use average value for estimation
-
-            // queue is full
-            else if (avgEst > minQue.top().m_fValue)
-            {
-                minQue.pop(); // pop max, and push min hash distance
-                minQue.emplace(it.first, avgEst); // use average value for estimation
-            }
-        }
-
-        assert(minQue.size() == CEOs::n_cand);
-
-        candTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-        startTime = chrono::high_resolution_clock::now();
-        priority_queue< IFPair, vector<IFPair>, greater<> > minQueTopK;
-        for (int i = 0; i < CEOs::n_cand; ++i)
-        {
-            IFPair ifPair = minQue.top();
-            minQue.pop();
-            int iPointIdx = ifPair.m_iIndex;
-
-            float fInnerProduct = vecQuery.dot(CEOs::matrix_X.row(iPointIdx));
-
-            // Add into priority queue
-            if (int(minQueTopK.size()) < n_neighbors)
-                minQueTopK.emplace(iPointIdx, fInnerProduct);
-
-            else if (fInnerProduct > minQueTopK.top().m_fValue)
-            {
-                minQueTopK.pop();
-                minQueTopK.emplace(iPointIdx, fInnerProduct);
-            }
-        }
-
-        // There is the case that we get all 0 index if we do not have enough Top-K
-        for (int k = (int)minQueTopK.size() - 1; k >= 0; --k)
-        {
-            matTopK(q, k) = minQueTopK.top().m_iIndex;
-            matTopDist(q, k) = minQueTopK.top().m_fValue;
-
-            minQueTopK.pop();
-        }
-
-        distTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-    }
-
-    auto durTime = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - startQueryTime);
-
-
-    if (verbose)
-    {
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Extracting candidates time: " << candTime << " ms" << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
-
-        // string sFileName = "coCEOs_Est_" + int2str(n_neighbors) +
-        //                    "_numProj_" + int2str(CEOs::n_proj) +
-        //                    "_numRepeat_" + int2str(CEOs::n_repeats) +
-        //                    "_topProj_" + int2str(CEOs::n_probed_vectors) +
-        //                    "_topPoints_" + int2str(CEOs::n_probed_points) +
-        //                    "_cand_" + int2str(n_cand) + ".txt";
-        //
-        //
-        // outputFile(matTopK, sFileName);
-    }
-
-    return make_tuple(matTopK, matTopDist);
-}
-
-/**
- * Build index of coCEOs for estimating inner product
- *
- * @param matX: Note that CEOs::matrix_X has not been initialized, so we need to send param matX
- * We can avoid duplicated memory by loading data directly from the filename if dataset is big.
- * This implementation computes matrix_P first, then reduce its size.
- * Though using more temporary memory but faster parallel, and perhaps cache-friendly
- *
- * Caveat: https://pybind11.readthedocs.io/en/stable/advanced/cast/eigen.html#storage-orders
- * While this approach allows fully optimized vectorized calculations in Eigen,
- * it cannot be used with array slices (i.e. when sending matX as an array slices from numpy)
- */
-void CEOs::build_CEOs_Hash_HighMem(const Ref<const RowMajorMatrixXf> &matX)
-{
-    cout << "n_points: " << CEOs::n_points << endl;
-    cout << "n_features: " << CEOs::n_features << endl;
-    cout << "n_proj: " << CEOs::n_proj << endl;
-    cout << "top_m: " << CEOs::top_m << endl;
-    cout << "fhtDim: " << CEOs::fhtDim << endl;
-
-    omp_set_num_threads(CEOs::n_threads);
-
-    auto start = chrono::high_resolution_clock::now();
-    CEOs::matrix_X = matX;
-
-    // Compute the data center
-    CEOs::vecCenter = CEOs::matrix_X.colwise().mean();
-
-//     CEOs::vecCenter = RowVectorXf::Zero(CEOs::n_features);
-//
-// #pragma omp parallel
-//     {
-//         RowVectorXf local = RowVectorXf::Zero(CEOs::n_features);
-//
-// #pragma omp for nowait
-//         for (int n = 0; n < CEOs::n_points; ++n) {
-//             // add the i-th row (contiguous in RowMajor)
-//             local += CEOs::matrix_X.row(n);
-//         }
-// #pragma omp critical
-//         {
-//             CEOs::vecCenter += local;   // one critical section per thread
-//         }
-//     }
-//
-//     CEOs::vecCenter /= static_cast<float>(CEOs::n_points);
-
-    auto duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start).count();
-    cout << "Copying and centering data time in seconds: " << (float)duration / 1000 << endl;
-
-    // CEOs::matrix_H has (2 * top-points) x (proj * repeats) since query phase will access each column corresponding each random vector
-    // We need 2 * top-points position for (index, value)
-    CEOs::matrix_H = MatrixXi::Zero(2 * CEOs::top_m, CEOs::n_proj * CEOs::n_repeats);
-
-    // mat_pX is identical to CEOs estimation, has (n_points) x (proj * repeats)
-    MatrixXf mat_pX = MatrixXf::Zero(CEOs::n_points, CEOs::n_proj * CEOs::n_repeats);
-
-    bitHD3Generator(CEOs::fhtDim * CEOs::n_rotate * CEOs::n_repeats, CEOs::seed, CEOs::bitHD1);
-    int log2_FHT = log2(CEOs::fhtDim);
-
-    float extractTopPointsTime = 0.0, projTime = 0.0;
-
-    // First, we compute the projection of each points, store it into mat_pX
-#pragma omp parallel for reduction(+:projTime)
-    for (int n = 0; n < CEOs::n_points; ++n) {
-
-        auto startTime = chrono::high_resolution_clock::now();
-
-        VectorXf tempX = VectorXf::Zero(CEOs::fhtDim);
-        tempX.segment(0, CEOs::n_features) = CEOs::matrix_X.row(n);
-
-        if (CEOs::centering)
-            tempX.segment(0, CEOs::n_features) = CEOs::matrix_X.row(n) - CEOs::vecCenter;
-
-        // For each repeat
-        for (int repeat = 0; repeat < CEOs::n_repeats; ++repeat) {
-
-            VectorXf rotatedX = tempX;
-            int baseIdx = CEOs::fhtDim * CEOs::n_rotate * repeat;
-
-            for (int rotate = 0; rotate < CEOs::n_rotate; ++rotate)
-            {
-                for (int d = 0; d < CEOs::fhtDim; ++d) {
-                    rotatedX(d) *= (2 * static_cast<float>(CEOs::bitHD1[baseIdx + rotate * CEOs::fhtDim + d]) - 1);
-                }
-
-                fht_float(rotatedX.data(), log2_FHT);
-            }
-
-            // Note for segment(i, size) where i is starting index, size is segment size
-            mat_pX.row(n).segment(CEOs::n_proj * repeat + 0, CEOs::n_proj) = rotatedX.segment(0, CEOs::n_proj); // only get up to #n_proj
-        }
-
-        projTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-    }
-
-
-    // Second, we extract top-m points closest/furthest to each random vector (i.e. for each column)
-#pragma omp parallel for reduction(+: extractTopPointsTime)
-    for (int iCol = 0; iCol < CEOs::n_repeats * CEOs::n_proj; ++iCol)
-    {
-        auto startTime = chrono::high_resolution_clock::now();
-
-        // Note that minQueFar has to deal with minus
-        // Since top-m << n, using priority queue is faster than make_heap and pop_heap
-        // Also, we will deque to get top-points closest/furthest to random vector, so the queues will be empty in the end
-        priority_queue<IFPair, vector<IFPair>, greater<> > minQueClose, minQueFar; // for closest and furthest
-
-        VectorXf projectedVec = mat_pX.col(iCol);
-
-        for (int n = 0; n < CEOs::n_points; ++n){
-
-            float fProjectedValue = projectedVec(n);
-
-            // Closest points
-            if ((int)minQueClose.size() < CEOs::top_m)
-                minQueClose.emplace(n, fProjectedValue);
-            else if (fProjectedValue > minQueClose.top().m_fValue)
-            {
-                minQueClose.pop();
-                minQueClose.emplace(n, fProjectedValue);
-            }
-
-            // Furthest points: need to deal with -
-            if ((int)minQueFar.size() < CEOs::top_m)
-                minQueFar.emplace(n, -fProjectedValue);
-            else
-            {
-                if (-fProjectedValue > minQueFar.top().m_fValue)
-                {
-                    minQueFar.pop();
-                    minQueFar.emplace(n, -fProjectedValue);
-                }
-            }
-        }
-
-        // Now deque and store into matrix_H:
-        // the first top-m is idx for closest, the second top-m is idx for furthest
-        for (int m = CEOs::top_m - 1; m >= 0; --m)
-        {
-            // Close:
-            CEOs::matrix_H(m, iCol) = minQueClose.top().m_iIndex;
-            minQueClose.pop();
-
-            // Far:
-            CEOs::matrix_H(m + CEOs::top_m, iCol) = minQueFar.top().m_iIndex;
-            minQueFar.pop();
-        }
-
-        extractTopPointsTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-    }
-
-    double dSize = 1.0 * (CEOs::matrix_H.rows() * CEOs::matrix_H.cols() * sizeof(int) + CEOs::matrix_X.rows() * CEOs::matrix_X.cols() * sizeof(float) ) / (1 << 30);
-    cout << "Size of CEOs-Hash index in GB: " << dSize << endl;
-
-    duration = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start).count();
-    cout << "Projecting time: " << projTime << " ms" << endl;
-    cout << "Extracting top-points time: " << extractTopPointsTime << " ms" << endl;
-    cout << "Constructing time (in seconds): " << (float)duration / 1000 << endl;
-}
-
-/**
- *
- * @param matQ
- * @param n_neighbors
- * @param verbose
- * @return
- */
-tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash_HighMem(const Ref<const RowMajorMatrixXf> & matQ, int n_neighbors, bool verbose)
-{
-    if (CEOs::n_probed_points > CEOs::top_m)
-    {
-        cerr << "Error: Number of probed points must be smaller than number of indexed top-points !" << endl;
-        exit(1);
-    }
-    if (CEOs::n_probed_vectors > CEOs::n_proj * CEOs::n_repeats)
-    {
-        cerr << "Error: Number of probed vectors must be smaller than n_proj * n_repeats !" << endl;
-        exit(1);
-    }
-
-    int n_queries = matQ.rows();
-    if (verbose)
-    {
-        cout << "n_queries: " << n_queries << endl;
-        cout << "n_probed_vectors: " << CEOs::n_probed_vectors << endl;
-        cout << "n_probed_points: " << CEOs::n_probed_points << endl;
-        // cout << "n_cand: " << CEOs::n_cand << endl;
-        cout << "n_threads: " << CEOs::n_threads << endl;
-    }
-
-    auto startQueryTime = chrono::high_resolution_clock::now();
-
-    float projTime = 0.0, estTime = 0.0, distTime = 0.0, candTime = 0.0;
-
-    RowMajorMatrixXi matTopK = MatrixXi::Zero(n_queries, n_neighbors);
-    RowMajorMatrixXf matTopDist = MatrixXf::Zero(n_queries, n_neighbors);
-
-    int log2_FHT = log2(CEOs::fhtDim);
-
-    float candSize = 0.0;
-
-    // omp_set_dynamic(0);     // Explicitly disable dynamic teams
-    omp_set_num_threads(CEOs::n_threads);
-#pragma omp parallel for reduction(+:projTime, estTime, candTime, distTime, candSize)
-    for (int q = 0; q < n_queries; ++q) {
-        auto startTime = chrono::high_resolution_clock::now();
-
-        // Get hash value of all hash table first
-        VectorXf vecQuery = matQ.row(q);
-        VectorXf vecProject = VectorXf(CEOs::n_proj * CEOs::n_repeats);
-
-        // For each repeat
-        for (int repeat = 0; repeat < CEOs::n_repeats; ++repeat)
-        {
-            int baseIdx = CEOs::fhtDim * CEOs::n_rotate * repeat;
-            VectorXf rotatedQ = VectorXf::Zero(CEOs::fhtDim);
-
-            rotatedQ.segment(0, CEOs::n_features) = vecQuery;
-
-            for (int rotate = 0; rotate < CEOs::n_rotate; ++rotate)
-            {
-                for (int d = 0; d < CEOs::fhtDim; ++d) {
-                    rotatedQ(d) *= (2 * static_cast<float>(CEOs::bitHD1[baseIdx + rotate * CEOs::fhtDim + d]) - 1);
-                }
-                fht_float(rotatedQ.data(), log2_FHT);
-            }
-
-            // Note for segment(i, size) where i is starting index, size is segment size
-            vecProject.segment(CEOs::n_proj * repeat + 0, CEOs::n_proj) = rotatedQ.segment(0, CEOs::n_proj); // only get up to #n_proj
-
-        }
-
-        // Now look for the top-r closest random vector
-        priority_queue<IFPair, vector<IFPair>, greater<> > minQue;
-
-        /**
-         * matrix_H contains the point IDx
-         * For query, we apply a simple trick to restore the furthest/closest vector
-         * We increase index by 1 to get rid of the case of 0, and store a sign to differentiate the closest/furthest
-         * Remember to convert this value back to the corresponding index of matrix_H
-         * This fix is only for the rare case where r_0 at exp = 0 has been selected, which happen with very tiny probability
-         */
-        for (int d = 0; d < CEOs::n_repeats * CEOs::n_proj; ++d) {
-
-            float fAbsProjValue = vecProject(d);
-
-            // Must increase by 1 after getting the value
-            int iCol = d + 1; // Hack: We increase by 1 since the index start from 0 and cannot have +/-
-
-            if (fAbsProjValue < 0) {
-                fAbsProjValue = -fAbsProjValue; // get abs
-                iCol = -iCol; // use minus to indicate furthest vector
-            }
-
-            if ((int) minQue.size() < CEOs::n_probed_vectors)
-                minQue.emplace(iCol, fAbsProjValue);
-
-            // queue is full
-            else if (fAbsProjValue > minQue.top().m_fValue) {
-                minQue.pop(); // pop max, and push min hash distance
-                minQue.emplace(iCol, fAbsProjValue);
-            }
-        }
-
-
-        projTime += (float) chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-
-        startTime = chrono::high_resolution_clock::now();
-        IVector vecRandIdx = IVector(CEOs::n_probed_vectors);
-
-        // Get index of closest/furthest random vector from minQueue
-        // We already increased by 1 to get rid of 0, and used the sign for closest/furthest
-        for (int i = CEOs::n_probed_vectors - 1; i >= 0 ; --i)
-        {
-            IFPair ifPair = minQue.top(); // This contains Ri which is closest/furthest to the query q
-            minQue.pop();
-
-            vecRandIdx[i] = ifPair.m_iIndex; // pos = close, neg = far
-        }
-
-        // Find candidate whose has estimated dot product largest and set its bit in boost::bitset
-        // Practical heuristic implementation: For each vector, get top-(n_cand / n_proj) - cache-friendly
-        // Theory: Insert points with its projection value into a minQueue, and remember the points which has been added into the candidate
-        // However, if n_cand is large, then the extra cost of using minQueue might make it less efficient than the practical implementation.
-        // Hashing observation: Try to reduce the cost of getting candidate and spend more cost on dist computation
-
-        // tsl::robin_set<int> setHist;
-        // setHist.reserve(CEOs::n_probed_vectors * CEOs::n_probed_points);
-
-        boost::dynamic_bitset<> bitsetHist(CEOs::n_points);
-
-        // This implementation is more cache-efficient though has more or less n_cand points due to duplicates
-        // Note that duplicate ratio is approximate 2 as we consider close & far
-        // So non-duplicate candidate is ~ n_cand / 2
-        // int bucketSize = ceil(1.0 * CEOs::n_cand / CEOs::n_probed_vectors);
-
-        for (int i = 0; i < CEOs::n_probed_vectors; ++i)
-        {
-            int iCol = vecRandIdx[i];
-            if (iCol > 0) // closest
-            {
-                iCol = iCol - 1; // get the right index col from matrix_P
-                for (int m = 0; m < CEOs::n_probed_points; ++m) {
-                    // setHist.insert(int(CEOs::matrix_H(m, iCol)));
-
-                    if (~bitsetHist[CEOs::matrix_H(m, iCol)])
-                        bitsetHist[CEOs::matrix_H(m, iCol)] = true; // set bit to true if not set
-                }
-            }
-            else // furthest
-            {
-                iCol = -iCol - 1; // get the right index col from matrix_P
-                for (int m = 0; m < CEOs::n_probed_points; ++m) {
-                    // setHist.insert(int(CEOs::matrix_H(m + CEOs::top_m, iCol)));
-                    if (~bitsetHist[CEOs::matrix_H(m + CEOs::top_m, iCol)])
-                        bitsetHist[CEOs::matrix_H(m + CEOs::top_m, iCol)] = true; // set bit to true if not set
-                }
-
-            }
-        }
-
-        candTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-        candSize += bitsetHist.count(); // setHist.size();
-
-        startTime = chrono::high_resolution_clock::now();
-        priority_queue< IFPair, vector<IFPair>, greater<> > minQueTopK;
-
-        // for (const auto& iPointIdx: setHist)
-        int iPointIdx = bitsetHist.find_first();
-        while (iPointIdx != (int)boost::dynamic_bitset<>::npos)
-        {
-            // Get dot product
-            float fInnerProduct = vecQuery.dot(CEOs::matrix_X.row(iPointIdx));
-
-            // Add into priority queue
-            if (int(minQueTopK.size()) < n_neighbors)
-                minQueTopK.emplace(iPointIdx, fInnerProduct);
-
-            else if (fInnerProduct > minQueTopK.top().m_fValue)
-            {
-                minQueTopK.pop();
-                minQueTopK.emplace(iPointIdx, fInnerProduct);
-            }
-
-            iPointIdx = bitsetHist.find_next(iPointIdx);
-        }
-
-        // There is the case that we get all 0 index if we do not have enough Top-K
-        for (int k = (int)minQueTopK.size() - 1; k >= 0; --k)
-        {
-            matTopK(q, k) = minQueTopK.top().m_iIndex;
-            matTopDist(q, k) = minQueTopK.top().m_fValue;
-
-            minQueTopK.pop();
-        }
-
-        distTime += (float)chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - startTime).count() / 1000.0;
-    }
-
-    auto durTime = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - startQueryTime);
-
-
-    if (verbose)
-    {
-        cout << "Projecting and extracting top-vectors time: " << projTime << " ms" << endl;
-        cout << "Estimating time: " << estTime << " ms" << endl;
-        cout << "Extracting candidates time: " << candTime << " ms" << endl;
-        cout << "Avg candidate size : " << candSize / n_queries << endl;
-        cout << "Computing distance time: " << distTime << " ms" << endl;
-        cout << "Querying time: " << (float)durTime.count() << " ms" << endl;
-
-        // string sFileName = "coCEOs_Hash_" + int2str(n_neighbors) +
         //                    "_numProj_" + int2str(CEOs::n_proj) +
         //                    "_numRepeat_" + int2str(CEOs::n_repeats) +
         //                    "_topProj_" + int2str(CEOs::n_probed_vectors) +
