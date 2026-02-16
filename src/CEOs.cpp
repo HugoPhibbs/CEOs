@@ -2,6 +2,7 @@
 #include "CEOs.h"
 #include "Header.h"
 #include "Utilities.h"
+#include <stdexcept>
 
 // __builtin_popcount function
 // #include <bits/stdc++.h>
@@ -2029,12 +2030,12 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
     if (CEOs::n_probed_points > CEOs::top_m)
     {
         cerr << "Error: Number of probed points must be smaller than number of indexed top-m points !" << endl;
-        exit(1);
+        throw std::runtime_error("Invalid n_probed_points");
     }
-    if (CEOs::n_probed_vectors > CEOs::n_proj * CEOs::n_repeats)
+    if (CEOs::n_probed_vectors > 4 * CEOs::n_proj * CEOs::n_proj * CEOs::n_repeats)
     {
-        cerr << "Error: Number of probed vectors must be smaller than n_proj * n_repeats !" << endl;
-        exit(1);
+        cerr << "Error: Number of probed vectors must be smaller than 4 * (n_proj^2) * n_repeats !" << endl;
+        throw std::runtime_error("Invalid n_probed_vectors");
     }
 
     int n_queries = matQ.rows();
@@ -2060,6 +2061,7 @@ tuple<RowMajorMatrixXi, RowMajorMatrixXf> CEOs::search_CEOs_Hash2(const Ref<cons
     int log2_FHT = log2(CEOs::fhtDim);
 
     // omp_set_dynamic(0);     // Explicitly disable dynamic teams
+
     omp_set_num_threads(CEOs::n_threads);
 
     // Note: Heuristic methods that consider only n_probed_vector/n_repeats buckets for each repeat
